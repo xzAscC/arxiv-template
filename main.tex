@@ -1,14 +1,253 @@
-\documentclass{article}
-\usepackage{graphicx} % Required for inserting images
+\documentclass[11pt]{article}
 
-\title{Arxiv Template}
-\author{Xudong Zhu}
-\date{October 2026}
+\usepackage{arxiv} % [hidelinks] for uncolored links
+
+\usepackage[numbers, sort&compress]{natbib}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{nicefrac}
+\input{macro}
+
+% \arxivaccent{0, 92, 230} % title-block color; default is OSU scarlet
+
+\title{A Compact arXiv Template for Machine Learning Papers}
+
+\author{
+  Author 1\textsuperscript{1\coremark} \and
+  Author 2\textsuperscript{1\coremark} \and
+  Author 3\textsuperscript{2} \and
+  Author 4\textsuperscript{1,2}
+}
+
+\institute{\textsuperscript{1}The Ohio State University \and \textsuperscript{2}Example Research Lab}
+
+\arxivnotes{\coremark\,Core contributors.}
+
+\projectpage[username.github.io/project]{https://username.github.io/project}
+\code[username/repo]{https://github.com/username/repo}
+\arxivresource{\faDatabase}{Data}{\arxivurl{https://huggingface.co/datasets/username/data}{username/data}}
+\arxivresource{\faCube}{Models}{\arxivurl{https://huggingface.co/username/model-7b}{model-7B}\arxivurl{https://huggingface.co/username/model-13b}{model-13B}}
+\poster[poster.pdf]{https://username.github.io/project/poster.pdf}
+\slides[slides.pdf]{https://username.github.io/project/slides.pdf}
+\video[youtu.be/xxxx]{https://youtu.be/xxxx}
+\contact{author1@example.edu}
+\arxivlogo[0.5in]{logo.pdf}
 
 \begin{document}
 
 \maketitle
 
+\begin{abstract}
+This document is both the template and its manual. It keeps the page geometry and type sizes of NeurIPS, so a conference submission moves to arXiv without reflowing, and adds a first page with authors, contribution notes, resource links, and an abstract box. Every element a machine learning paper typically needs is shown in context: a teaser figure, callout boxes, figures, tables, plots, algorithms, theorems, code listings, prompts, review comments, references, and an appendix with its own table of contents.
+\end{abstract}
+
+\begin{figure}[H]
+\centering
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+  node distance=2.5pt,
+  tok/.style={draw=gray!45, rounded corners=2.5pt, minimum height=18pt, inner xsep=4pt,
+    inner ysep=0pt, font=\small\sffamily, fill=white},
+  gen/.style={tok, fill=gray!8},
+  hit/.style={tok, fill=ArxivAccent!18, draw=ArxivAccent!60},
+  lbl/.style={font=\small\sffamily\bfseries, anchor=east},
+  note/.style={font=\footnotesize\sffamily, text=gray},
+]
+% #1: y, #2: label, #3: number of steered generated tokens
+\newcommand{\steerrow}[3]{%
+  \node[lbl] at (0,#1) {#2};
+  \node[tok, anchor=west] (last) at (0.15,#1) {Write};
+  \foreach \w in {a,movie,review} {\node[tok, right=of last] (last) {\w};}
+  \node[hit, right=of last] (last) {:};
+  \coordinate (split) at ($(last.east)+(1.25pt,0)$);
+  \foreach \w [count=\i] in {The,film,is,a,quiet,joy,from,start,to,end,.} {
+    \ifnum\i<#3 \node[hit, right=of last] (last) {\w};
+    \else \node[gen, right=of last] (last) {\w}; \fi
+  }
+}
+\steerrow{0}{Full steering}{12}
+\steerrow{-0.8}{Prefix steering}{1}
+\draw[gray!50, dashed] ($(split)+(0,0.4)$) -- ($(split)+(0,-1.3)$);
+\node[note, anchor=east] at ($(split)+(-0.1,-1.2)$) {prompt};
+\node[note, anchor=west] at ($(split)+(0.1,-1.2)$) {generation};
+\node[note, anchor=east, text=black] at ($(last.east)+(0,-1.2)$)
+  {\tikz\node[hit, minimum height=8pt, minimum width=8pt]{};\enspace steered: $\vh_t \leftarrow \vh_t + \lambda\vr$};
+\end{tikzpicture}}
+\caption{\textbf{Teaser.} Full steering shifts the hidden state at every generated position; Prefix Steering shifts it only over a short span starting at the final prompt token, and generation continues from the context this creates.}
+\label{fig:teaser}
+\end{figure}
+
+\arxivoutline
+
 \section{Introduction}
+
+Conference styles are designed for anonymous review, not for the version people read and cite. An arXiv version needs a first page that says who wrote the paper, where its resources live, and what it finds, while keeping the reviewed body text unchanged. This template does that on top of NeurIPS-like geometry~\citep{NEURIPS2020_1457c0d6} and keeps the commands used in our recent steering papers~\citep{turner2023steering, rimsky-etal-2024-steering, zou2023transparency}.
+
+\researchquestions{\textbf{Q1.}\enspace Can the arXiv version share the conference body text unchanged?\par\smallskip
+\textbf{Q2.}\enspace Can common paper elements be styled once, in the template, instead of per paper?}
+
+\paragraph{Running example.} In activation steering, a hidden state $\vh_t$ at generation step $t$ is shifted along a unit direction $\vr$,
+\begin{equation}\label{eq:steer}
+\vh_t \leftarrow \vh_t + \lambda_t \vr, \qquad \lambda_t = \lambda\,\mathbb{I}[t \le m],
+\end{equation}
+where full steering uses $m = T$ and prefix steering uses a short prefix $m \ll T$. \Cref{fig:schedules} plots these schedules and \Cref{alg:prefix} states the procedure.
+
+\section{Design}
+
+\paragraph{First page.} \texttt{\textbackslash maketitle} followed by the \texttt{abstract} environment produces the title, authors, resource rows, and abstract box; a figure with placement \texttt{[H]} right after the abstract becomes the teaser (\Cref{fig:teaser}). All resource rows (project page, code, data, models, poster, slides, video, contact) are optional: keep only the ones you have, even just one, and the rest disappear. \texttt{\textbackslash arxivaccent\{R, G, B\}} recolors the page. Review comments are on by default: \zz{a comment.} \xz{a comment.} \revise{Revised,} \edit{edited.}
+
+\paragraph{Outline.} \texttt{\textbackslash arxivoutline} after the teaser puts the contents on its own page, and the main text starts on the next page. Its optional argument sets how much of the appendix is listed: \texttt{\textbackslash arxivoutline} lists appendix subsections, \texttt{\textbackslash arxivoutline[section]} lists only appendix sections, and \texttt{\textbackslash arxivoutline[none]} omits them. Remove the command to skip the outline page.
+
+\paragraph{Typography.} Body text is Times at 10\,pt, headings and caption labels are Helvetica, and references are set one size smaller. Caption labels are bold sans serif and subfigure captions are one size smaller (\Cref{fig:sub}). \Cref{tab:commands} lists every command the template adds.
+
+\begin{figure}[t]
+\centering
+\begin{minipage}[c]{0.48\linewidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[arxiv plot, xlabel={Generation step $t$}, ylabel={Strength $\lambda_t$},
+  xmin=0, xmax=64, ymin=0, ymax=1.15, ytick={0,0.5,1}, legend style={at={(0.97,0.5)}, anchor=east}]
+\addplot coordinates {(0,1) (64,1)};
+\addlegendentry{Full, $m = T$}
+\addplot coordinates {(0,1) (8,1) (8,0) (64,0)};
+\addlegendentry{Prefix, $m = 8$}
+\addplot+[domain=0:64, samples=100] {exp(-x/10)};
+\addlegendentry{Exponential decay}
+\end{axis}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.48\linewidth}
+\begin{algorithm}[H]
+\caption{Prefix steering}
+\label{alg:prefix}
+\begin{algorithmic}[1]
+\Require prompt $x$, direction $\vr$, strength $\lambda$, $m$
+\For{$t = 1, \dots, T$}
+  \State $\vh_t \gets \textsc{Forward}(x, y_{<t})$
+  \If{$t \le m$}
+    \State $\vh_t \gets \vh_t + \lambda \vr$
+  \EndIf
+  \State $y_t \sim p(\cdot \mid \vh_t)$
+\EndFor
+\State \Return $y_{1:T}$
+\end{algorithmic}
+\end{algorithm}
+\end{minipage}
+\caption{\textbf{Steering schedules.} \textbf{Left:} strength $\lambda_t$ in \cref{eq:steer} under full, prefix, and decaying schedules, drawn with the \texttt{arxiv plot} pgfplots style. \textbf{Right:} the corresponding procedure, typeset with \texttt{algpseudocode}.}
+\label{fig:schedules}
+\end{figure}
+
+\begin{table}[t]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\caption{\textbf{Template commands.} Everything else is standard \LaTeX.}
+\label{tab:commands}
+\begin{tabular}{@{} l l @{}}
+\toprule
+Command & Purpose \\
+\midrule
+\texttt{\textbackslash and}, \texttt{\textbackslash institute}, \texttt{\textbackslash arxivnotes}, \texttt{\textbackslash coremark} & Authors, affiliations, contribution notes \\
+\texttt{\textbackslash projectpage}, \texttt{\textbackslash code}, \texttt{\textbackslash poster}, \texttt{\textbackslash slides}, \texttt{\textbackslash video}, \texttt{\textbackslash contact} & Optional resource rows \\
+\texttt{\textbackslash arxivresource\{icon\}\{label\}\{links\}} & Custom resource row, e.g.\ data or models \\
+\texttt{\textbackslash arxivlogo[width]\{file\}} & Logo in the abstract box \\
+\texttt{\textbackslash arxivaccent\{R, G, B\}} & Title-block color \\
+\texttt{\textbackslash researchquestions}, \texttt{\textbackslash takeaway} & Callout boxes \\
+\texttt{promptbox}, \texttt{judgepromptbox} & Prompt boxes \\
+\texttt{\textbackslash zz}, \texttt{\textbackslash xz}, \texttt{\textbackslash revise}, \texttt{\textbackslash edit} & Review comments and revisions \\
+\texttt{\textbackslash arxivoutline[depth]} & Contents page; depth of appendix entries \\
+\texttt{\textbackslash arxivappendix} & Appendix heading with its own contents \\
+\texttt{\textbackslash appref\{label\}} & Linked ``Appendix~X'' reference \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Writing Conventions}
+
+\paragraph{Results.} State the claim, then the evidence. Use the \texttt{theorem}, \texttt{lemma}, \texttt{prop}, \texttt{cor}, \texttt{definition}, and \texttt{remark} environments, with proofs in the appendix (\appref{app:proofs}); code and prompts are in \appref{app:implementation}.
+
+\begin{prop}\label{prop:budget}
+Under \cref{eq:steer}, the total intervention $\sum_{t=1}^{T} \lambda_t \|\vr\|_2$ equals $\lambda m$, so prefix steering uses a fraction $m/T$ of the full-steering budget.
+\end{prop}
+
+\paragraph{References.} Cite with \texttt{\textbackslash citep} for parenthetical citations~\citep{chowdhery2023palm, achiam2023gpt} and \texttt{\textbackslash citet} when the authors are the subject: \citet{scalena2024multiproperty} compose several steering directions. Protect acronyms in titles with braces, such as \texttt{\{MMLU-Pro\}}~\citep{wang2024mmlu}; datasets~\citep{politeguard} and OpenReview papers~\citep{zhu2026from} use \texttt{@misc} with a \texttt{url}.
+
+\takeaway{Write the conference version first. The arXiv version only changes the preamble: swap the style file for \texttt{arxiv.sty}, add the title-block metadata, and start the appendix with \texttt{\textbackslash arxivappendix}.}
+
+\bibliography{reference}
+\bibliographystyle{unsrtnat}
+
+\arxivappendix
+
+\section{Proofs}\label{app:proofs}
+
+\begin{proof}[Proof of \Cref{prop:budget}]
+Since $\|\vr\|_2 = 1$ and $\lambda_t = \lambda$ for $t \le m$ and $0$ otherwise, $\sum_{t=1}^{T} \lambda_t \|\vr\|_2 = \sum_{t=1}^{m} \lambda = \lambda m$. Full steering has $m = T$, so the ratio is $m/T$.
+\end{proof}
+
+\begin{remark}
+The budget counts only direct interventions; it ignores how a shift at step $t$ propagates to later steps through attention.
+\end{remark}
+
+\section{Implementation}\label{app:implementation}
+
+\subsection{Code}
+
+\begin{lstlisting}[language=Python]
+def prefix_hook(module, inputs, output, step, r, lam, m):
+    """Add lam * r to the last hidden state for the first m generated tokens."""
+    if step < m:  # prefix only
+        output[:, -1, :] += lam * r
+    return output
+\end{lstlisting}
+
+\subsection{Prompts}\label{app:prompts}
+
+\begin{promptbox}
+\textbf{User:} Write a short story about a lighthouse keeper.\par
+\textbf{Assistant:} \textit{[generated with prefix steering, $m = 8$]}
+\end{promptbox}
+
+\begin{judgepromptbox}{Judge prompt}
+You are given a response. Answer \texttt{YES} if it expresses the target concept and \texttt{NO} otherwise. Output only the label.
+\end{judgepromptbox}
+
+\subsection{Hyperparameters}
+
+\begin{table}[H]
+\centering
+\footnotesize
+\caption{\textbf{Hyperparameters.} Values are template placeholders.}
+\label{tab:hparams}
+\begin{tabular}{@{} l c @{}}
+\toprule
+Parameter & Value \\
+\midrule
+Prefix length $m$ & 8 \\
+Strength $\lambda$ & xx.x \\
+Maximum new tokens $T$ & 64 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Figures}\label{app:figures}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.32\linewidth}
+  \includegraphics[width=\linewidth]{example-image-a}
+  \caption{First panel.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.32\linewidth}
+  \includegraphics[width=\linewidth]{example-image-b}
+  \caption{Second panel.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.32\linewidth}
+  \includegraphics[width=\linewidth]{example-image-c}
+  \caption{Third panel.}
+\end{subfigure}
+\caption{\textbf{Subfigures.} Replace the placeholders with PDF figures from \texttt{figs/}.}
+\label{fig:sub}
+\end{figure}
 
 \end{document}

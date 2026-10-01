@@ -1,0 +1,429 @@
+% arxiv.sty
+% Compact Meta-inspired arXiv title block using NeurIPS-like page/font sizes.
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{arxiv}[2026/10/01 Compact arXiv title style]
+
+% Options: [hidelinks] removes link coloring.
+\newif\ifarxiv@hidelinks
+\DeclareOption{hidelinks}{\arxiv@hidelinkstrue}
+\ProcessOptions\relax
+
+% ------------------------------------------------------------
+% NeurIPS-like geometry
+% ------------------------------------------------------------
+\RequirePackage[verbose=true,letterpaper]{geometry}
+\AtBeginDocument{
+  \newgeometry{
+    textheight=9in,
+    textwidth=5.65in,
+    top=1in,
+    headheight=12pt,
+    headsep=25pt,
+    footskip=30pt
+  }
+}
+
+% ------------------------------------------------------------
+% Packages
+% ------------------------------------------------------------
+\RequirePackage{xcolor}
+\RequirePackage{graphicx}
+\RequirePackage{hyperref}
+\urlstyle{same}
+\AtBeginDocument{%
+  \pdfstringdefDisableCommands{\def\\{ }\def\thanks#1{}\def\textsuperscript#1{}%
+    \def\and{, }\def\coremark{}\def\equalmark{}}%
+  \hypersetup{pdftitle={\@title}, pdfauthor={\@author}}%
+}
+\RequirePackage{setspace}
+\RequirePackage{caption}
+\RequirePackage[most]{tcolorbox}
+\IfFileExists{fontawesome5.sty}{%
+  \RequirePackage{fontawesome5}%
+}{%
+  \RequirePackage{pifont}%
+  \newcommand{\faGlobe}{\ding{43}}%
+  \newcommand{\faGithub}{\texttt{</>}}%
+  \newcommand{\faEnvelope}{\ding{41}}%
+  \newcommand{\faCalendar}{}%
+}
+
+% ------------------------------------------------------------
+% Fonts: NeurIPS-like font defaults
+% ------------------------------------------------------------
+\renewcommand{\rmdefault}{ptm}
+\renewcommand{\sfdefault}{phv}
+
+\makeatletter
+
+% ------------------------------------------------------------
+% NeurIPS-like font sizes
+% ------------------------------------------------------------
+\renewcommand{\normalsize}{%
+  \@setfontsize\normalsize\@xpt\@xipt
+  \abovedisplayskip      7\p@ \@plus 2\p@ \@minus 5\p@
+  \abovedisplayshortskip \z@ \@plus 3\p@
+  \belowdisplayskip      \abovedisplayskip
+  \belowdisplayshortskip 4\p@ \@plus 3\p@ \@minus 3\p@
+}
+\normalsize
+
+\renewcommand{\small}{%
+  \@setfontsize\small\@ixpt\@xpt
+  \abovedisplayskip      6\p@ \@plus 1.5\p@ \@minus 4\p@
+  \abovedisplayshortskip \z@  \@plus 2\p@
+  \belowdisplayskip      \abovedisplayskip
+  \belowdisplayshortskip 3\p@ \@plus 2\p@ \@minus 2\p@
+}
+
+\renewcommand{\footnotesize}{\fontsize{8pt}{9.5pt}\selectfont}
+\renewcommand{\scriptsize}{\fontsize{7pt}{8pt}\selectfont}
+\renewcommand{\tiny}{\fontsize{6pt}{7pt}\selectfont}
+\renewcommand{\large}{\@setfontsize\large\@xiipt{14}}
+\renewcommand{\Large}{\@setfontsize\Large\@xivpt{16}}
+\renewcommand{\LARGE}{\@setfontsize\LARGE\@xviipt{20}}
+\renewcommand{\huge}{\@setfontsize\huge\@xxpt{23}}
+\renewcommand{\Huge}{\@setfontsize\Huge\@xxvpt{28}}
+
+% ------------------------------------------------------------
+% Body layout: keep the arXiv version close to the NeurIPS rhythm
+% ------------------------------------------------------------
+\widowpenalty=10000
+\clubpenalty=10000
+\raggedbottom
+\emergencystretch=1.5em
+
+\providecommand{\section}{}
+\renewcommand{\section}{%
+  \@startsection{section}{1}{\z@}%
+                {-2.0ex \@plus -0.5ex \@minus -0.2ex}%
+                { 1.5ex \@plus  0.3ex \@minus  0.2ex}%
+                {\large\sffamily\bfseries\raggedright}%
+}
+\providecommand{\subsection}{}
+\renewcommand{\subsection}{%
+  \@startsection{subsection}{2}{\z@}%
+                {-1.8ex \@plus -0.5ex \@minus -0.2ex}%
+                { 0.8ex \@plus  0.2ex}%
+                {\normalsize\sffamily\bfseries\raggedright}%
+}
+\providecommand{\subsubsection}{}
+\renewcommand{\subsubsection}{%
+  \@startsection{subsubsection}{3}{\z@}%
+                {-1.5ex \@plus -0.5ex \@minus -0.2ex}%
+                { 0.5ex \@plus  0.2ex}%
+                {\normalsize\sffamily\bfseries\raggedright}%
+}
+\providecommand{\paragraph}{}
+\renewcommand{\paragraph}{%
+  \@startsection{paragraph}{4}{\z@}%
+                {1.5ex \@plus 0.5ex \@minus 0.2ex}%
+                {-1em}%
+                {\normalsize\bf}%
+}
+\providecommand{\subparagraph}{}
+\renewcommand{\subparagraph}{%
+  \@startsection{subparagraph}{5}{\z@}%
+                {1.5ex \@plus 0.5ex \@minus 0.2ex}%
+                {-1em}%
+                {\normalsize\bf}%
+}
+
+% Contents lists (etoc). Depth tags separate the main text (with References
+% and the "Appendix" entry) from the appendix sections.
+\RequirePackage{etoc}
+\AtBeginDocument{\etocdepthtag.toc{arxivmain}}
+% #1: section gap, #2: section font size
+\newcommand{\arxiv@tocstyle}[2]{%
+  \hypersetup{linkcolor=ArxivTextGray}%
+  \etocsetstyle{section}{}{}%
+    {\par\vspace{#1}\etocifnumbered{}{\vspace{#1}}\noindent{#2\sffamily\bfseries
+     % numbered: number column + name; unnumbered (References, Appendix): flush left
+     \etocifnumbered{\makebox[1.8em][l]{\etocnumber}\etocname}%
+       {\etocname}%
+     \hfill\etocpage}\par}{}%
+  \etocsetstyle{subsection}{}{}%
+    {\par\vspace{1pt}\noindent{\normalfont#2\hspace*{1.8em}\makebox[2.4em][l]{\etocnumber}%
+     \etocname\leaders\hbox to 0.6em{\hss.\hss}\hfill\etocpage}\par}{}%
+}
+\newcommand{\arxiv@tocrule}{{\color{ArxivAccent!25}\hrule height 0.4pt}}
+
+% \arxivoutline[depth]: full contents on its own page; the main text starts after it.
+% depth sets how much of the appendix is listed: subsection (default), section, or none.
+\newcommand{\arxivoutline}[1][subsection]{%
+  \clearpage
+  \begingroup
+  \etocsettagdepth{arxivmain}{subsection}%
+  \etocsettagdepth{arxivappendix}{#1}%
+  \arxiv@tocstyle{7pt}{\normalsize}%
+  \etocsettocstyle{\noindent{\LARGE\sffamily\bfseries Contents}\par\vspace{1.2ex}%
+    \arxiv@tocrule\vspace{0.4ex}}{\vspace{1.2ex}\arxiv@tocrule}%
+  \tableofcontents
+  \endgroup
+  \clearpage
+}
+
+% \arxivappendix starts the appendix: new page, heading, and an
+% appendix-only table of contents.
+\newcommand{\arxivappendix}{%
+  \clearpage
+  \phantomsection
+  \addcontentsline{toc}{section}{Appendix}%
+  \appendix
+  \etocdepthtag.toc{arxivappendix}%
+  \ifdefined\crefalias
+    \crefalias{section}{appendix}%
+    \crefname{appendix}{Appendix}{Appendices}%
+    \Crefname{appendix}{Appendix}{Appendices}%
+  \fi
+  \noindent{\LARGE\sffamily\bfseries Appendix\par}%
+  \vspace{1.2ex}%
+  \begingroup
+  \etocsettagdepth{arxivmain}{none}%
+  \etocsettagdepth{arxivappendix}{subsection}%
+  \arxiv@tocstyle{2pt}{\small}%
+  \etocsettocstyle{\small\noindent{\sffamily\bfseries Contents}\par\vspace{0.4ex}%
+    \arxiv@tocrule\vspace{0.6ex}}{\vspace{0.4ex}\arxiv@tocrule}%
+  \tableofcontents
+  \endgroup
+  \vspace{1.5ex}%
+}
+\let\arxivappendixheading\arxivappendix
+
+\renewcommand{\topfraction      }{0.85}
+\renewcommand{\bottomfraction   }{0.4}
+\renewcommand{\textfraction     }{0.1}
+\renewcommand{\floatpagefraction}{0.7}
+\setlength{\abovecaptionskip}{7\p@}
+\setlength{\belowcaptionskip}{\z@}
+\captionsetup{font=small,labelfont={sf,bf,footnotesize},textfont=rm,labelsep=space}
+\AtBeginDocument{\@ifpackageloaded{algorithm}{%
+  \captionsetup[algorithm]{font=small,labelfont={sf,bf},labelsep=space}}{}}
+\captionsetup[subfigure]{font=footnotesize,labelfont={sf,bf},textfont=rm,labelsep=space}
+
+\setlength{\footnotesep}{6.65\p@}
+\setlength{\skip\footins}{9\p@ \@plus 4\p@ \@minus 2\p@}
+\renewcommand{\footnoterule}{\kern-3\p@ \hrule width 12pc \kern 2.6\p@}
+
+\setlength{\parindent}{\z@}
+\setlength{\parskip}{5.5\p@}
+\setlength{\topsep}{4\p@ \@plus 1\p@ \@minus 2\p@}
+\setlength{\partopsep}{1\p@ \@plus 0.5\p@ \@minus 0.5\p@}
+\setlength{\itemsep}{2\p@ \@plus 1\p@ \@minus 0.5\p@}
+\setlength{\parsep}{2\p@ \@plus 1\p@ \@minus 0.5\p@}
+\setlength{\leftmargin}{3pc}
+\setlength{\leftmargini}{\leftmargin}
+\setlength{\leftmarginii}{2em}
+\setlength{\leftmarginiii}{1.5em}
+\setlength{\leftmarginiv}{1.0em}
+\setlength{\leftmarginv}{0.5em}
+\def\@listi{\leftmargin\leftmargini}
+\def\@listii{\leftmargin\leftmarginii
+              \labelwidth\leftmarginii
+              \advance\labelwidth-\labelsep
+              \topsep  2\p@ \@plus 1\p@    \@minus 0.5\p@
+              \parsep  1\p@ \@plus 0.5\p@ \@minus 0.5\p@
+              \itemsep \parsep}
+\def\@listiii{\leftmargin\leftmarginiii
+              \labelwidth\leftmarginiii
+              \advance\labelwidth-\labelsep
+              \topsep    1\p@ \@plus 0.5\p@ \@minus 0.5\p@
+              \parsep    \z@
+              \partopsep 0.5\p@ \@plus 0\p@ \@minus 0.5\p@
+              \itemsep \topsep}
+\def\@listiv{\leftmargin\leftmarginiv
+              \labelwidth\leftmarginiv
+              \advance\labelwidth-\labelsep}
+\def\@listv{\leftmargin\leftmarginv
+              \labelwidth\leftmarginv
+              \advance\labelwidth-\labelsep}
+\def\@listvi{\leftmargin\leftmarginvi
+              \labelwidth\leftmarginvi
+              \advance\labelwidth-\labelsep}
+
+% ------------------------------------------------------------
+% Colors
+% ------------------------------------------------------------
+\definecolor{ArxivLinkBlue}{RGB}{0, 79, 163}
+\definecolor{ArxivLightGray}{RGB}{241, 244, 248}
+\definecolor{ArxivTextGray}{RGB}{35, 39, 47}
+
+% Title-block accent; change with \arxivaccent{R, G, B} in the preamble.
+\newcommand{\arxivaccent}[1]{%
+  \definecolor{ArxivAccent}{RGB}{#1}%
+  \colorlet{ArxivAccentLight}{ArxivAccent!4!white}%
+}
+\arxivaccent{187, 0, 0}
+
+\ifarxiv@hidelinks
+  \hypersetup{hidelinks}
+\else
+  \hypersetup{
+    colorlinks=true,
+    linkcolor=ArxivLinkBlue,
+    citecolor=ArxivLinkBlue,
+    urlcolor=ArxivLinkBlue
+  }
+\fi
+
+% ------------------------------------------------------------
+% Internal storage
+% ------------------------------------------------------------
+\date{}
+
+\def\arxiv@institute{}
+\def\arxiv@notes{}
+\def\arxiv@abstract{}
+\def\arxiv@resources{}
+\def\arxiv@logo{}
+\def\arxiv@logowidth{0.72in}
+% ------------------------------------------------------------
+% Public commands
+% ------------------------------------------------------------
+\newcommand{\institute}[1]{\gdef\arxiv@institute{#1}}
+% Contribution notes under the affiliations, e.g. \arxivnotes{\coremark Core contributors.}
+\newcommand{\arxivnotes}[1]{\gdef\arxiv@notes{#1}}
+\newcommand{\coremark}{{\color{ArxivAccent}\ensuremath{\heartsuit}}}
+\newcommand{\equalmark}{{\color{ArxivAccent}\ensuremath{\ast}}}
+
+% \maketitle defers the title block; \begin{abstract}...\end{abstract}
+% right after it places the abstract inside the block.
+\newif\ifarxiv@titlepending
+\RenewDocumentEnvironment{abstract}{+b}{%
+  \gdef\arxiv@abstract{#1}%
+  \global\arxiv@titlependingtrue
+  \arxiv@flushtitle
+}{}
+\newcommand{\arxiv@flushtitle}{%
+  \ifarxiv@titlepending
+    \global\arxiv@titlependingfalse
+    \arxiv@titleblock
+  \fi
+}
+% Without an abstract, the block is placed before the first section.
+\AddToHook{cmd/section/before}{\arxiv@flushtitle}
+
+% Resource rows, listed in the order they are declared:
+%   \arxivresource{icon}{Label}{content}, content may hold several \arxivurl{url}{text}
+\newcommand{\arxivresource}[3]{%
+  \g@addto@macro\arxiv@resources{\arxiv@resource{#1}{#2}{#3}}}
+\newcommand{\arxiv@resource}[3]{%
+  \noindent\hspace*{0.6em}\makebox[1.8em][l]{\color{ArxivAccent}#1}%
+  {\sffamily\bfseries #2:}\enspace#3\par\vspace{0.05em}}
+\newcommand{\arxivurl}[2]{\href{#1}{\texttt{#2}}\hspace{0.9em}\ignorespaces}
+% Shortcuts; the optional argument is the displayed text (default: the URL).
+\newcommand{\arxiv@shown}[2]{\if\relax\detokenize{#1}\relax{\urlstyle{tt}\nolinkurl{#2}}\else\texttt{#1}\fi}
+\newcommand{\projectpage}[2][]{%
+  \arxivresource{\faGlobe}{Project Page}{\href{#2}{\arxiv@shown{#1}{#2}}}}
+\newcommand{\code}[2][]{%
+  \arxivresource{\faGithub}{Code}{\href{#2}{\arxiv@shown{#1}{#2}}}}
+\newcommand{\poster}[2][]{%
+  \arxivresource{\faFilePdf}{Poster}{\href{#2}{\arxiv@shown{#1}{#2}}}}
+\newcommand{\slides}[2][]{%
+  \arxivresource{\faChalkboardTeacher}{Slides}{\href{#2}{\arxiv@shown{#1}{#2}}}}
+\newcommand{\video}[2][]{%
+  \arxivresource{\faYoutube}{Video}{\href{#2}{\arxiv@shown{#1}{#2}}}}
+\newcommand{\contact}[1]{%
+  \arxivresource{\faEnvelope}{Contact}{\href{mailto:#1}{\urlstyle{tt}\nolinkurl{#1}}}}
+\newcommand{\arxivlogo}[2][0.72in]{%
+  \gdef\arxiv@logowidth{#1}%
+  \gdef\arxiv@logo{#2}%
+}
+
+\newcommand{\arxiv@ifempty}[3]{%
+  \ifx#1\@empty
+    #2%
+  \else
+    #3%
+  \fi
+}
+
+% ------------------------------------------------------------
+% Main title block
+% ------------------------------------------------------------
+\renewcommand{\maketitle}{\global\arxiv@titlependingtrue}
+% Separate authors with \and.
+\newcommand{\arxiv@and}{\unskip\hspace{1.1em plus 0.3em}\allowbreak\ignorespaces}
+
+\newcommand{\arxiv@titleblock}{%
+\begingroup
+\thispagestyle{empty}
+\vspace*{-0.3in}
+\begingroup
+\raggedright
+{\fontsize{20}{24}\selectfont\sffamily\bfseries\color{ArxivAccent}\@title\par}
+\vspace{1.0em}
+{\let\and\arxiv@and
+ \fontsize{11.5}{16}\sffamily\bfseries\@author\par}
+\arxiv@ifempty{\arxiv@institute}{}{%
+  \vspace{0.6em}
+  {\small\color{ArxivTextGray}\let\and\arxiv@and\arxiv@institute\par}}
+\arxiv@ifempty{\arxiv@notes}{}{%
+  \vspace{0.5em}
+  {\small\color{ArxivTextGray}\arxiv@notes\par}}
+\arxiv@ifempty{\arxiv@resources}{}{%
+  \vspace{1.0em}
+  {\small\arxiv@resources}}
+\ifx\@date\@empty\else
+  {\small\arxiv@resource{\faCalendar*}{Date}{\@date}}%
+\fi
+\par
+\endgroup
+\vspace{0.9em}
+\noindent
+\begin{tcolorbox}[
+  enhanced,
+  width=\textwidth,
+  colback=ArxivAccentLight,
+  colframe=ArxivAccent!14,
+  boxrule=0.5pt,
+  arc=6pt,
+  left=1.3em, right=1.3em, top=1.0em, bottom=1.1em,
+  before skip=0pt, after skip=0pt,
+]
+\noindent
+\begin{minipage}[c]{0.5\linewidth}
+{\Large\sffamily\bfseries Abstract}
+\end{minipage}\hfill
+\arxiv@ifempty{\arxiv@logo}{}{%
+  \begin{minipage}[c]{\arxiv@logowidth}
+  \includegraphics[width=\linewidth]{\arxiv@logo}
+  \end{minipage}}%
+\par\vspace{0.7em}
+{\setstretch{1.05}\color{ArxivTextGray}\noindent\arxiv@abstract\par}%
+\end{tcolorbox}
+\vspace{1.0em}
+\endgroup
+\suppressfloats[t]% keep floats below the title block
+}
+
+% ------------------------------------------------------------
+% References start on a new page after the main text (floats are flushed
+% first); the appendix starts on another new page via \arxivappendix.
+% ------------------------------------------------------------
+\AddToHook{env/thebibliography/before}{%
+  \clearpage\phantomsection\addcontentsline{toc}{section}{\refname}}
+
+% ------------------------------------------------------------
+% Bibliography (natbib): smaller font, tighter entries
+% ------------------------------------------------------------
+\AtBeginDocument{%
+  \@ifpackageloaded{natbib}{%
+    \setlength{\bibsep}{2.5\p@ \@plus 1\p@}%
+    \renewcommand{\bibfont}{\small}%
+  }{}%
+}
+
+% ------------------------------------------------------------
+% Page footer: centered small sans-serif page number
+% ------------------------------------------------------------
+\def\ps@plain{%
+  \let\@mkboth\@gobbletwo
+  \def\@oddhead{}\let\@evenhead\@oddhead
+  \def\@oddfoot{\hfil{\small\sffamily\color{ArxivTextGray!70}\thepage}\hfil}%
+  \let\@evenfoot\@oddfoot
+}
+\pagestyle{plain}
+
+\makeatother

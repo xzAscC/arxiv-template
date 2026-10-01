@@ -1,0 +1,460 @@
+% ------------------------------------------------------------
+% Packages
+% ------------------------------------------------------------
+\usepackage{amsmath,amsthm,amssymb,amsbsy}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\graphicspath{{./figs/}}
+\usepackage{subcaption}
+\usepackage{wrapfig}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{comment}
+\usepackage{cleveref} % load after hyperref
+\crefname{equation}{Eq.}{Eqs.}
+\Crefname{equation}{Eq.}{Eqs.}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{listings}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{positioning,calc}
+\newcommand{\appref}[1]{\hyperref[#1]{Appendix~\ref*{#1}}}
+
+% ------------------------------------------------------------
+% Code listings: \begin{lstlisting}[language=Python] ... \end{lstlisting}
+% ------------------------------------------------------------
+\definecolor{codegray}{RGB}{110,118,129}
+\definecolor{codekw}{RGB}{0,79,163}
+\definecolor{codestr}{RGB}{158,64,0}
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{codekw}\bfseries,
+  stringstyle=\color{codestr},
+  commentstyle=\color{codegray}\itshape,
+  numbers=left, numberstyle=\tiny\color{codegray}, numbersep=8pt,
+  backgroundcolor=\color{gray!4},
+  frame=single, rulecolor=\color{gray!35}, framesep=6pt, xleftmargin=16pt, xrightmargin=6.4pt,
+  breaklines=true, columns=fullflexible, keepspaces=true, showstringspaces=false,
+  aboveskip=10pt, belowskip=6pt,
+}
+
+% ------------------------------------------------------------
+% Plots: \begin{axis}[arxiv plot] ... ; cycle list matches the template colors
+% ------------------------------------------------------------
+\pgfplotscreateplotcyclelist{arxiv}{
+  {ArxivAccent, very thick, mark=none},
+  {ArxivLinkBlue, very thick, mark=none},
+  {takeawaygreen, very thick, mark=none, dashed},
+  {gray, thick, mark=none, densely dotted},
+}
+\pgfplotsset{
+  arxiv plot/.style={
+    width=\linewidth, height=0.56\linewidth,
+    cycle list name=arxiv,
+    axis lines=left, axis line style={gray!60},
+    tick style={gray!60}, tick label style={font=\scriptsize\sffamily},
+    label style={font=\footnotesize\sffamily},
+    legend style={font=\scriptsize\sffamily, draw=none, fill=none},
+    legend cell align=left,
+    grid=major, major grid style={gray!15},
+    every axis plot/.append style={line join=round},
+  },
+}
+
+% ------------------------------------------------------------
+% Theorems
+% ------------------------------------------------------------
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{cor}{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+% ------------------------------------------------------------
+% Callout boxes
+% Usage: \researchquestions{\textbf{Q1.}\enspace First?\par\smallskip \textbf{Q2.}\enspace Second?}
+%        \takeaway{Main finding.}
+%        \begin{promptbox} ... \end{promptbox}
+%        \begin{judgepromptbox}{Title} ... \end{judgepromptbox}
+% Optional titles: \researchquestions[Research question]{...}, \takeaway[Takeaways]{...}
+% ------------------------------------------------------------
+\usepackage[most]{tcolorbox}
+\usepackage{fontawesome5}
+\definecolor{researchblue}{RGB}{62,100,125}
+\definecolor{takeawaygreen}{RGB}{62,112,84}
+\definecolor{promptpurple}{RGB}{112,82,140}
+
+% \begin{researchbox}[tcolorbox options]{color}
+\newtcolorbox{researchbox}[2][]{
+  enhanced,
+  breakable,
+  colback=#2!5,
+  frame hidden,
+  overlay unbroken and first={
+    \begin{tcbclipinterior}
+      \fill[#2] (frame.south west) rectangle ([xshift=2.5pt]frame.north west);
+    \end{tcbclipinterior}
+  },
+  overlay middle and last={
+    \begin{tcbclipinterior}
+      \fill[#2] (frame.south west) rectangle ([xshift=2.5pt]frame.north west);
+    \end{tcbclipinterior}
+  },
+  boxrule=0pt,
+  arc=4pt,
+  left=9pt, right=9pt, top=7pt, bottom=7pt,
+  boxsep=0pt,
+  before skip=10pt, after skip=10pt,
+  #1,
+}
+\newtcolorbox{promptbox}{
+  enhanced, breakable,
+  colback=gray!4, colframe=gray!35, boxrule=0.4pt, arc=3pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt,
+  fontupper=\small,
+  before skip=10pt, after skip=10pt,
+}
+\newenvironment{judgepromptbox}[1]{%
+  \begin{researchbox}{promptpurple}
+    {\color{promptpurple}\faGavel\enspace\sffamily\bfseries #1}\par\smallskip
+    \small
+}{\end{researchbox}}
+\newcommand{\researchquestions}[2][Research questions]{%
+  \begin{researchbox}[unbreakable]{researchblue}
+    {\color{researchblue}\faQuestionCircle\enspace\sffamily\bfseries #1}\par\smallskip
+    #2
+  \end{researchbox}%
+}
+\newcommand{\takeaway}[2][Takeaway]{%
+  \begin{researchbox}[unbreakable]{takeawaygreen}
+    {\color{takeawaygreen}\faLightbulb\enspace\sffamily\bfseries #1}\par\smallskip
+    #2
+  \end{researchbox}%
+}
+
+% fields
+\renewcommand{\O}{\mathbb{O}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\V}{\mathbb{V}}
+\def \real    { \mathbb{R} }
+\def \reals   { \mathbb{R} }
+\def \Real {\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\def \complex{\mathbb{C}}
+\def \Complex {\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+
+\newcommand{\la}{\left\langle}
+\newcommand{\ra}{\right\rangle}
+\newcommand{\e}{
+\begin{equation}}
+  \newcommand{\ee}{
+\end{equation}}
+\newcommand{\en}{
+\begin{equation*}}
+  \newcommand{\een}{
+\end{equation*}}
+\newcommand{\eqn}{
+\begin{eqnarray}}
+  \newcommand{\eeqn}{
+\end{eqnarray}}
+\newcommand{\bmat}{
+\begin{bmatrix}}
+  \newcommand{\emat}{
+\end{bmatrix}}
+% complex numbers
+\renewcommand{\Re}[1]{\operatorname{Re}\left\{#1\right\}}
+\renewcommand{\Im}[1]{\operatorname{Im}\left\{#1\right\}}
+\newcommand{\conj}[1]{\mkern 1.5mu\overline{\mkern-1.5mu#1\mkern-1.5mu}\mkern 1.5mu}
+
+\DeclareMathAlphabet\mathbfcal{OMS}{cmsy}{b}{n}
+% probability and stat
+\renewcommand{\P}[1]{\operatorname{\mathbb{P}}\left(#1\right)}
+\newcommand{\E}{\operatorname{\mathbb{E}}}
+\newcommand{\dif}{\operatorname{d}}
+\newcommand{\var}{\operatorname{var}}
+
+% calculus
+\renewcommand{\d}[1]{\,\mathrm{d}#1}
+
+% constants (written in roman, if wanted)
+%\newcommand{\e}{\mathrm{e}}
+\renewcommand{\j}{\mathrm{j}}
+
+\newcommand{\mb}{\mathbf}
+\newcommand{\mc}{\mathcal}
+\newcommand{\mf}{\mathfrak}
+\newcommand{\bb}{\mathbb}
+\newcommand{\mrm}{\mathrm}
+\newcommand{\mtt}{\mathtt}
+\def \vecword  {\operatorname*{vec}}
+% linear algebra
+%   vector notation
+\newcommand{\vct}[1]{\boldsymbol{#1}}
+%   matrices
+\newcommand{\mtx}[1]{\boldsymbol{#1}}
+%   block vector
+\newcommand{\bvct}[1]{\mathbf{#1}}
+%   block matrix
+\newcommand{\bmtx}[1]{\mathbf{#1}}
+%  inner products
+\newcommand{\inner}[1]{\left<#1\right>}
+\newcommand{\<}{\langle}
+\renewcommand{\>}{\rangle}
+%   transpose, Hermitian, pseudo-inverse
+\renewcommand{\H}{\mathrm{H}}
+\newcommand{\T}{\mathrm{T}}
+\newcommand{\pinv}{\dagger}
+%  fundamental subspaces
+\newcommand{\Null}{\operatorname{Null}}
+\newcommand{\Range}{\operatorname{Range}}
+\newcommand{\Span}{\operatorname{Span}}
+%  operators
+\newcommand{\trace}{\operatorname{trace}}
+\newcommand{\conv}{\operatorname{conv}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\toep}{\operatorname{Toep}}
+\newcommand{\SDP}{\operatorname{SDP}}
+\newcommand{\PSD}{\operatorname{PSD}}
+\newcommand{\far}{\operatorname{far}}
+\newcommand{\near}{\operatorname{near}}
+\newcommand{\sign}{\operatorname{sign}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\Sign}{\operatorname{Sgn}}
+\newcommand{\dist}{\operatorname{dist}}
+\def \lg        {\langle}
+\def \rg        {\rangle}
+\def \vec       {\operatorname*{vec}}
+%
+\newcommand{\dimension}{\operatorname{dim}}
+
+% sets and topology
+\newcommand{\set}[1]{\mathbb{#1}}
+\newcommand{\closure}{\operatorname{cl}}  % closure
+\newcommand{\interior}{\operatorname{int}}
+\newcommand{\boundary}{\operatorname{bd}}
+\newcommand{\diameter}{\operatorname{diam}}
+
+% functional analysis
+\newcommand{\domain}{\operatorname{dom}}
+\newcommand{\epigraph}{\operatorname{epi}}
+\newcommand{\hypograph}{\operatorname{hypo}}
+\newcommand{\linop}[1]{\mathscr{#1}}  % general linear operator
+
+% optimization
+\DeclareMathOperator*{\minimize}{\text{minimize}}
+\DeclareMathOperator*{\maximize}{\text{maximize}}
+\DeclareMathOperator*{\argmin}{\text{arg~min}}
+\DeclareMathOperator*{\argmax}{\text{arg~max}}
+\def \st {\operatorname*{s.t.\ }}
+% other
+%\newcommand{\sgn}{\text{sgn}}
+\newcommand{\sinc}{\text{sinc}}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\eps}{\epsilon}
+
+\newcommand{\wh}{\widehat}
+\newcommand{\wc}{\widecheck}
+\newcommand{\wt}{\widetilde}
+\newcommand{\ol}{\overline}
+
+\newcommand{\norm}[2]{\left\| #1 \right\|_{#2}}
+\newcommand{\nrm}[1]{\left\Vert#1\right\Vert}
+\newcommand{\abs}[1]{\left| #1 \right|}
+\newcommand{\bracket}[1]{\left( #1 \right)}
+\newcommand{\parans}[1]{\left(#1\right)}
+\newcommand{\innerprod}[2]{\left\langle #1,  #2 \right\rangle}
+\newcommand{\prob}[1]{\bb P\left[ #1 \right]}
+\newcommand{\expect}[1]{\bb E\left[ #1 \right]}
+\newcommand{\function}[2]{#1 \left(#2\right)}
+\newcommand{\integral}[4]{\int_{#1}^{#2}\; #3\; #4}
+\newcommand{\iter}[1]{^{(#1)}}
+
+%--------------------------------------------------------------------------
+\newcommand{\calA}{\mathcal{A}}
+\newcommand{\calB}{\mathcal{B}}
+\newcommand{\calC}{\mathcal{C}}
+\newcommand{\calD}{\mathcal{D}}
+\newcommand{\calE}{\mathcal{E}}
+\newcommand{\calF}{\mathcal{F}}
+\newcommand{\calG}{\mathcal{G}}
+\newcommand{\calH}{\mathcal{H}}
+\newcommand{\calI}{\mathcal{I}}
+\newcommand{\calJ}{\mathcal{J}}
+\newcommand{\calK}{\mathcal{K}}
+\newcommand{\calL}{\mathcal{L}}
+\newcommand{\calM}{\mathcal{M}}
+\newcommand{\calN}{\mathcal{N}}
+\newcommand{\calO}{\mathcal{O}}
+\newcommand{\calP}{\mathcal{P}}
+\newcommand{\calQ}{\mathcal{Q}}
+\newcommand{\calR}{\mathcal{R}}
+\newcommand{\calS}{\mathcal{S}}
+\newcommand{\calT}{\mathcal{T}}
+\newcommand{\calU}{\mathcal{U}}
+\newcommand{\calV}{\mathcal{V}}
+\newcommand{\calW}{\mathcal{W}}
+\newcommand{\calX}{\mathcal{X}}
+\newcommand{\calY}{\mathcal{Y}}
+\newcommand{\calZ}{\mathcal{Z}}
+
+\newcommand{\va}{\vct{a}}
+\newcommand{\vb}{\vct{b}}
+\newcommand{\vc}{\vct{c}}
+\newcommand{\vd}{\vct{d}}
+\newcommand{\ve}{\vct{e}}
+\newcommand{\vf}{\vct{f}}
+\newcommand{\vg}{\vct{g}}
+\newcommand{\vh}{\vct{h}}
+\newcommand{\vi}{\vct{i}}
+\newcommand{\vj}{\vct{j}}
+\newcommand{\vk}{\vct{k}}
+\newcommand{\vl}{\vct{l}}
+\newcommand{\vm}{\vct{m}}
+\newcommand{\vn}{\vct{n}}
+\newcommand{\vo}{\vct{o}}
+\newcommand{\vp}{\vct{p}}
+\newcommand{\vq}{\vct{q}}
+\newcommand{\vr}{\vct{r}}
+\newcommand{\vs}{\vct{s}}
+\newcommand{\vt}{\vct{t}}
+\newcommand{\vu}{\vct{u}}
+\newcommand{\vv}{\vct{v}}
+\newcommand{\vw}{\vct{w}}
+\newcommand{\vx}{\vct{x}}
+\newcommand{\vy}{\vct{y}}
+\newcommand{\vz}{\vct{z}}
+%
+\newcommand{\valpha}{\vct{\alpha}}
+\newcommand{\vbeta}{\vct{\beta}}
+\newcommand{\vtheta}{\vct{\theta}}
+\newcommand{\vepsilon}{\vct{\epsilon}}
+\newcommand{\veps}{\vct{\epsilon}}
+\newcommand{\vvarepsilon}{\vct{\varepsilon}}
+\newcommand{\vgamma}{\vct{\gamma}}
+\newcommand{\vlambda}{\vct{\lambda}}
+\newcommand{\vnu}{\vct{\nu}}
+\newcommand{\vphi}{\vct{\phi}}
+\newcommand{\vpsi}{\vct{\psi}}
+\newcommand{\vdelta}{\vct{\delta}}
+\newcommand{\veta}{\vct{\eta}}
+\newcommand{\vxi}{\vct{\xi}}
+\newcommand{\vmu}{\vct{\mu}}
+\newcommand{\vrho}{\vct{\rho}}
+%
+\newcommand{\vzero}{\vct{0}}
+\newcommand{\vone}{\vct{1}}
+
+\newcommand{\mA}{\mtx{A}}
+\newcommand{\mB}{\mtx{B}}
+\newcommand{\mC}{\mtx{C}}
+\newcommand{\mD}{\mtx{D}}
+\newcommand{\mE}{\mtx{E}}
+\newcommand{\mF}{\mtx{F}}
+\newcommand{\mG}{\mtx{G}}
+\newcommand{\mH}{\mtx{H}}
+\newcommand{\mJ}{\mtx{J}}
+\newcommand{\mK}{\mtx{K}}
+\newcommand{\mL}{\mtx{L}}
+\newcommand{\mM}{\mtx{M}}
+\newcommand{\mN}{\mtx{N}}
+\newcommand{\mO}{\mtx{O}}
+\newcommand{\mP}{\mtx{P}}
+\newcommand{\mQ}{\mtx{Q}}
+\newcommand{\mR}{\mtx{R}}
+\newcommand{\mS}{\mtx{S}}
+\newcommand{\mT}{\mtx{T}}
+\newcommand{\mU}{\mtx{U}}
+\newcommand{\mV}{\mtx{V}}
+\newcommand{\mW}{\mtx{W}}
+\newcommand{\mX}{\mtx{X}}
+\newcommand{\mY}{\mtx{Y}}
+\newcommand{\mZ}{\mtx{Z}}
+%
+\newcommand{\mGamma}{\mtx{\Gamma}}
+\newcommand{\mDelta}{\mtx{\Delta}}
+\newcommand{\mLambda}{\mtx{\Lambda}}
+\newcommand{\mOmega}{\mtx{\Omega}}
+\newcommand{\mPhi}{\mtx{\Phi}}
+\newcommand{\mPsi}{\mtx{\Psi}}
+\newcommand{\mSigma}{\mtx{\Sigma}}
+\newcommand{\mTheta}{\mtx{\Theta}}
+\newcommand{\mUpsilon}{\mtx{\Upsilon}}
+%
+\newcommand{\mId}{{\bf I}}
+\newcommand{\mEx}{{\bf J}}
+\newcommand{\mzero}{{\bf 0}}
+\newcommand{\mone}{{\bf 1}}
+%
+\newcommand{\bva}{\bvct{a}}
+\newcommand{\bvh}{\bvct{h}}
+\newcommand{\bvw}{\bvct{w}}
+\newcommand{\bvx}{\bvct{x}}
+\newcommand{\bvy}{\bvct{y}}
+
+\newcommand{\bmM}{\bmtx{M}}
+\newcommand{\bmH}{\bmtx{H}}
+\newcommand{\bmX}{\bmtx{X}}
+
+\newcommand{\setA}{\set{A}}
+\newcommand{\setB}{\set{B}}
+\newcommand{\setC}{\set{C}}
+\newcommand{\setD}{\set{D}}
+\newcommand{\setE}{\set{E}}
+\newcommand{\setF}{\set{F}}
+\newcommand{\setG}{\set{G}}
+\newcommand{\setH}{\set{H}}
+\newcommand{\setI}{\set{I}}
+\newcommand{\setJ}{\set{J}}
+\newcommand{\setK}{\set{K}}
+\newcommand{\setL}{\set{L}}
+\newcommand{\setM}{\set{M}}
+\newcommand{\setN}{\set{N}}
+\newcommand{\setO}{\set{O}}
+\newcommand{\setP}{\set{P}}
+\newcommand{\setQ}{\set{Q}}
+\newcommand{\setR}{\set{R}}
+\newcommand{\setS}{\set{S}}
+\newcommand{\setT}{\set{T}}
+\newcommand{\setU}{\set{U}}
+\newcommand{\setV}{\set{V}}
+\newcommand{\setW}{\set{W}}
+\newcommand{\setX}{\set{X}}
+\newcommand{\setY}{\set{Y}}
+\newcommand{\setZ}{\set{Z}}
+
+\renewcommand{\ss}{{\vspace*{-1mm}}}
+
+\setcounter{MaxMatrixCols}{20}
+
+\newlength{\imgwidth}
+\setlength{\imgwidth}{3.125in}
+
+% Review comments: comment out \showcommentstrue to hide them and unhighlight revisions.
+\newif\ifshowcomments
+\showcommentstrue
+\ifshowcomments
+  \newcommand{\zz}[1]{\textcolor{red}{\bf [{\em ZZ:} #1]}}
+  \newcommand{\xz}[1]{\textcolor{purple}{\bf [{\em XZ:} #1]}}
+  \newcommand{\revise}[1]{\textcolor{blue}{#1}}
+  \newcommand{\edit}[1]{\textcolor{red}{#1}}
+\else
+  \newcommand{\zz}[1]{}
+  \newcommand{\xz}[1]{}
+  \newcommand{\revise}[1]{#1}
+  \newcommand{\edit}[1]{#1}
+\fi
+\newcommand{\zzrevise}[1]{\revise{#1}}
+
+\setlist[enumerate]{leftmargin=*}
+\setlist[itemize]{leftmargin=*}

@@ -1,0 +1,19 @@
+main.tex
+  s_3494fd994d8108::t_3e00c9c2a56409 22,34
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "82588934fa2cf3f173da3a0c7ea0a2d8561994de",
+  "prompts": {},
+  "sessions": {
+    "s_3494fd994d8108": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "4a41a558-dd80-46e8-ad63-50ada15d7367",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}

@@ -1,0 +1,34 @@
+LICENSE
+  s_87e45542b43278::t_1c21d73401b970 1-21
+README.md
+  s_3494fd994d8108::t_72294a0ddbc414 1-2,4,6,8-10,14,18,21,23
+  s_87e45542b43278::t_1c21d73401b970 3,5,11-13,15-17,19-20,22,24-25
+  s_87e45542b43278::t_b0a803a7af1dce 7
+preview.svg
+  s_87e45542b43278::t_a7e38c1ee4cae9 1-2,5-2737
+  s_87e45542b43278::t_8f6eb1f7d29fa2 3-4
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "96d6ec6f9c1c36b06b94f81dd8864d6d3b334b68",
+  "prompts": {},
+  "sessions": {
+    "s_3494fd994d8108": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "4a41a558-dd80-46e8-ad63-50ada15d7367",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    },
+    "s_87e45542b43278": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a0f9c2-afe0-7e11-9689-03835a219da2",
+        "model": "gpt-6-astra"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}

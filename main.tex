@@ -8,7 +8,7 @@
 \usepackage{nicefrac}
 \input{macro}
 
-% \arxivaccent{0, 92, 230} % title-block color; default is OSU scarlet
+% \arxivaccent{0, 92, 230} % accent color; default is scarlet
 
 \title{A Compact arXiv Template for Machine Learning Papers}
 
@@ -19,7 +19,7 @@
   Author 4\textsuperscript{1,2}
 }
 
-\institute{\textsuperscript{1}The Ohio State University \and \textsuperscript{2}Example Research Lab}
+\institute{\textsuperscript{1}Example University \and \textsuperscript{2}Example Research Lab}
 
 \arxivnotes{\coremark\,Core contributors.}
 
@@ -31,7 +31,7 @@
 \slides[slides.pdf]{https://username.github.io/project/slides.pdf}
 \video[youtu.be/xxxx]{https://youtu.be/xxxx}
 \contact{author1@example.edu}
-\arxivlogo[0.5in]{logo.pdf}
+\arxivlogo[0.5in]{example-image-1x1} % replace with your logo
 
 \begin{document}
 
@@ -81,7 +81,7 @@ This document is both the template and its manual. It keeps the page geometry an
 
 \section{Introduction}
 
-Conference styles are designed for anonymous review, not for the version people read and cite. An arXiv version needs a first page that says who wrote the paper, where its resources live, and what it finds, while keeping the reviewed body text unchanged. This template does that on top of NeurIPS-like geometry~\citep{NEURIPS2020_1457c0d6} and keeps the commands used in our recent steering papers~\citep{turner2023steering, rimsky-etal-2024-steering, zou2023transparency}.
+Conference styles are designed for anonymous review, not for the version people read and cite. An arXiv version needs a first page that says who wrote the paper, where its resources live, and what it finds, while keeping the reviewed body text unchanged. This template does that on top of NeurIPS-like geometry~\citep{NEURIPS2020_1457c0d6} and keeps commands common in activation steering papers~\citep{turner2023steering, rimsky-etal-2024-steering, zou2023transparency}.
 
 \researchquestions{\textbf{Q1.}\enspace Can the arXiv version share the conference body text unchanged?\par\smallskip
 \textbf{Q2.}\enspace Can common paper elements be styled once, in the template, instead of per paper?}
@@ -170,7 +170,7 @@ Command & Purpose \\
 Under \cref{eq:steer}, the total intervention $\sum_{t=1}^{T} \lambda_t \|\vr\|_2$ equals $\lambda m$, so prefix steering uses a fraction $m/T$ of the full-steering budget.
 \end{prop}
 
-\paragraph{References.} Cite with \texttt{\textbackslash citep} for parenthetical citations~\citep{chowdhery2023palm, achiam2023gpt} and \texttt{\textbackslash citet} when the authors are the subject: \citet{scalena2024multiproperty} compose several steering directions. Protect acronyms in titles with braces, such as \texttt{\{MMLU-Pro\}}~\citep{wang2024mmlu}; datasets~\citep{politeguard} and OpenReview papers~\citep{zhu2026from} use \texttt{@misc} with a \texttt{url}.
+\paragraph{References.} Cite with \texttt{\textbackslash citep} for parenthetical citations~\citep{chowdhery2023palm, achiam2023gpt} and \texttt{\textbackslash citet} when the authors are the subject: \citet{scalena2024multiproperty} compose several steering directions. Protect acronyms in titles with braces, such as \texttt{\{MMLU-Pro\}}~\citep{wang2024mmlu}; datasets~\citep{politeguard} use \texttt{@misc} with a \texttt{url}.
 
 \takeaway{Write the conference version first. The arXiv version only changes the preamble: swap the style file for \texttt{arxiv.sty}, add the title-block metadata, and start the appendix with \texttt{\textbackslash arxivappendix}.}
 

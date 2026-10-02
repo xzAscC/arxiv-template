@@ -19,6 +19,13 @@ A compact LaTeX template with a customizable title page, resource links, an opti
 The [example PDF](example.pdf) and [`main.tex`](main.tex) document the layout, commands, and customization options.
 Before sharing your paper, disable review comments by commenting out `\showcommentstrue` in `macro.tex`.
 
+## TODO
+
+- [ ] Submit the template to the Overleaf Gallery.
+- [ ] Add a slides template.
+- [ ] Add a poster template.
+- [ ] Add a project page template.
+
 ## License
 
 The template code and documentation are available under the [MIT License](LICENSE).

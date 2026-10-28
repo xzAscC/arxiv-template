@@ -1,0 +1,27 @@
+README.md
+  s_df3613a8e5240a::t_85648e2e7e0dc9 64
+  s_df3613a8e5240a::t_34e797da49f0e9 5
+  s_df3613a8e5240a::t_b4867e8dc90a05 3
+  s_df3613a8e5240a::t_97c5c212b8c415 47
+  s_df3613a8e5240a::t_f7ddc33cc6703b 52,56,58
+roadmap/Roadmap.html
+  s_df3613a8e5240a::t_9872dcfad4037a 1-43,48-57,59-159
+  s_df3613a8e5240a::t_245d5bb118f0e6 58
+  s_df3613a8e5240a::t_9a7000eab26605 44-47
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "301b8c3d2ed2bd086b1ab63e2de9f5a750e49276",
+  "prompts": {},
+  "sessions": {
+    "s_df3613a8e5240a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b700ec3d-c7b2-4af4-94a6-835256750d48",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}

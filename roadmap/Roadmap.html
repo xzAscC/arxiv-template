@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Project Roadmap</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Noto+Serif+SC:wght@400;600&display=swap">
+<style>
+/* Light (parchment) by default; the toggle sets data-theme on <html> to dark, or to auto to follow the system */
+:root { --sans:Inter, system-ui, "Noto Sans CJK SC", sans-serif;
+  --serif:Newsreader, "Noto Serif SC", "Source Han Serif SC", "Noto Serif", Georgia, serif;
+  color-scheme:light; --bg:#f0eee6; --panel:#faf9f5; --line:#dcd8cb; --fg:#141413; --muted:#5e5d59;
+  --faint:#8e8b82; --accent:#c96442; --good:#5a7d34; --warn:#9c6418; }
+@media (prefers-color-scheme: dark) { :root[data-theme="auto"] { color-scheme:dark; --bg:#0e0f11; --panel:#16171a;
+  --line:#27292e; --fg:#e7e8eb; --muted:#a3a7ae; --faint:#6c717a; --accent:#8d95f2; --good:#4cb782; --warn:#f2c94c;
+  --serif:var(--sans); } }
+:root[data-theme="dark"] { color-scheme:dark; --bg:#0e0f11; --panel:#16171a; --line:#27292e; --fg:#e7e8eb;
+  --muted:#a3a7ae; --faint:#6c717a; --accent:#8d95f2; --good:#4cb782; --warn:#f2c94c; --serif:var(--sans); }
+
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--fg); font:15.5px/1.6 var(--serif); }
+main { max-width:860px; margin:0 auto; padding:40px 24px 96px; }
+a { color:var(--accent); }
+code { font:13px "JetBrains Mono", ui-monospace, monospace; }
+header { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap; }
+h1 { font-size:28px; font-weight:600; margin:0 0 6px; }
+h2 { font-size:20px; font-weight:600; margin:40px 0 10px; padding-top:20px; border-top:1px solid var(--line); }
+h3 { font:600 12.5px var(--sans); letter-spacing:.06em; text-transform:uppercase; color:var(--faint); margin:24px 0 8px; }
+.meta { font:13px var(--sans); color:var(--muted); display:flex; gap:16px; flex-wrap:wrap; }
+.seg { display:inline-flex; border:1px solid var(--line); border-radius:8px; overflow:hidden; background:var(--panel); }
+.seg button { font:12.5px var(--sans); border:0; background:none; color:var(--muted); padding:4px 12px; cursor:pointer; }
+.seg button.on { background:var(--line); color:var(--fg); }
+
+/* An aim's fields: the name on the left, the text beside it */
+dl { display:grid; grid-template-columns:8em 1fr; gap:6px 16px; margin:8px 0; }
+dt { font:600 13.5px/1.9 var(--sans); color:var(--muted); }
+dd { margin:0; }
+@media (max-width:560px) { dl { grid-template-columns:1fr; gap:0; } dd { margin-bottom:8px; } }
+
+/* A task's status, as the [ ] [/] [x] [-] of our task lists: class="todo", "doing", "done" or "dropped" */
+ul { padding-left:1.4em; margin:6px 0; }
+ul.tasks { list-style:none; padding-left:1.6em; }
+ul.tasks > li { margin:6px 0; }
+.todo::before, .doing::before, .done::before, .dropped::before { display:inline-block; width:1.4em;
+  font-family:var(--sans); }
+/* in a task list the sign hangs left of the text */
+ul.tasks > li::before { width:1.6em; margin-left:-1.6em; }
+.todo::before { content:"○"; color:var(--faint); }
+.doing::before { content:"◐"; color:var(--warn); }
+.done::before { content:"✓"; color:var(--good); }
+.dropped::before { content:"–"; color:var(--faint); }
+.dropped { color:var(--faint); text-decoration:line-through; }
+/* A field not written yet */
+.blank { color:var(--faint); }
+/* A paper to read first */
+.first > cite::before { content:"★ "; color:var(--accent); font-style:normal; }
+/* A paper in the reading list: its reference, then why we read it */
+cite { font-style:normal; }
+li > p { margin:2px 0 0; font-style:italic; color:var(--muted); }
+
+@media print { :root { color-scheme:light; --bg:#fff; --panel:#fff; } .seg { display:none; }
+  main { padding:0; max-width:none; } }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <div>
+    <h1>Project Roadmap</h1>
+    <div class="meta">
+      <span>Started <span class="blank">—</span></span>
+      <span><span class="todo"></span>to do</span>
+      <span><span class="doing"></span>doing</span>
+      <span><span class="done"></span>done</span>
+      <span><span class="dropped"></span>dropped</span>
+    </div>
+  </div>
+  <span class="seg" aria-label="Theme"><button data-theme-set="light">Light</button><button data-theme-set="dark">Dark</button><button data-theme-set="auto">Auto</button></span>
+</header>
+
+<h2>Central question</h2>
+<p class="blank">—</p>
+
+<h2>Order</h2>
+<ul>
+  <li class="blank">—</li>
+  <li>Within the aims, start with the cheap step that is most likely to fail.</li>
+  <li>For each experiment, fix what it compares, its metric and its output before writing code.</li>
+</ul>
+
+<!-- One section per aim; copy it for Aim B, C, ... -->
+<h2>Aim A. <span class="blank">—</span></h2>
+<dl>
+  <dt>Hypothesis</dt><dd class="blank">—</dd>
+  <dt>Theory</dt><dd class="todo"><span class="blank">—</span></dd>
+  <dt>Experiment</dt><dd class="todo"><span class="blank">—</span></dd>
+  <dt>Outcomes</dt><dd class="blank">—</dd>
+  <dt>Risks</dt><dd class="blank">—</dd>
+  <dt>Done when</dt><dd class="blank">—</dd>
+  <dt>Paper</dt><dd>undecided</dd>
+</dl>
+
+<h2>Templates</h2>
+<ul class="tasks">
+  <li class="todo">Poster.</li>
+  <li class="todo">The rest of the template (Research Template in Projects.md): arXiv, project page, code,
+    demo video, model card, slides, video, the research process and how we work with AI.</li>
+</ul>
+<dl>
+  <dt>Done when</dt><dd class="blank">—</dd>
+</dl>
+
+<h2>Code</h2>
+<p>Make the code easier to read, and keep the experiments apart.</p>
+<ul class="tasks">
+  <li class="todo">One command reproduces each figure in <code>figs/</code>, with its data source written down.</li>
+</ul>
+<dl>
+  <dt>Done when</dt><dd>Every figure in <code>figs/</code> comes out of a clean clone.</dd>
+</dl>
+
+<h2>Reading</h2>
+<dl>
+  <dt>Topics</dt><dd class="blank">—</dd>
+  <dt>Done when</dt><dd>A list with one sentence per paper on its relation to this project.</dd>
+</dl>
+
+<h2>Open decisions</h2>
+<ul>
+  <li class="blank">—</li>
+</ul>
+
+<!-- One h3 per category. Add a paper: its reference from the bib-lookup skill, never from memory:
+     <li class="todo"><cite>Authors. <a href="URL">Title</a>. Venue, Year.</cite><p>Why we read it.</p></li>
+     Add "first" to the class (class="todo first") for a paper to read first. -->
+<h2>Reading list</h2>
+<h3 class="blank">—</h3>
+<ul class="tasks">
+  <li class="todo"><cite class="blank">—</cite><p class="blank">—</p></li>
+</ul>
+
+</main>
+<script>
+// The theme toggle. A page opened from JD's server runs sandboxed, without storage, so the choice is kept
+// only when the browser allows it.
+const root = document.documentElement, themes = document.querySelectorAll('[data-theme-set]');
+try { const t = localStorage.getItem('roadmap-theme'); if (t) root.dataset.theme = t; } catch (e) {}
+const markTheme = () => themes.forEach(b => b.classList.toggle('on', (root.dataset.theme || 'light') === b.dataset.themeSet));
+themes.forEach(b => b.onclick = () => {
+  const t = b.dataset.themeSet;
+  if (t === 'light') delete root.dataset.theme; else root.dataset.theme = t;
+  try { t === 'light' ? localStorage.removeItem('roadmap-theme') : localStorage.setItem('roadmap-theme', t); } catch (e) {}
+  markTheme();
+});
+markTheme();
+</script>
+</body>
+</html>

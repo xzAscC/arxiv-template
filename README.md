@@ -1,8 +1,8 @@
 # Research Templates
 
-LaTeX templates for what a research project makes: the arXiv paper, the conference poster, and the project roadmap. Each folder is self-contained. To use one, copy its folder into the project; improvements found while using it go back into the template here. The code template is [ai-research-template](https://github.com/xzAscC/ai-research-template), and the project page template lives in the [website repository](https://github.com/xzAscC/xzAscC.github.io).
+Templates for what a research project makes: the arXiv paper and the conference poster in LaTeX, and the project roadmap as a web page. Each folder is self-contained. To use one, copy its folder into the project; improvements found while using it go back into the template here. The code template is [ai-research-template](https://github.com/xzAscC/ai-research-template), and the project page template lives in the [website repository](https://github.com/xzAscC/xzAscC.github.io).
 
-On Overleaf, set the main document (Menu → Main document) to the template you compile: `arxiv/main.tex`, `poster/poster.tex` or `roadmap/Roadmap.tex`.
+On Overleaf, set the main document (Menu → Main document) to the template you compile: `arxiv/main.tex` or `poster/poster.tex`.
 
 ## arxiv
 
@@ -44,24 +44,24 @@ New poster:
 
 ## roadmap
 
-A project's roadmap as a LaTeX document, first used in the Prefix Steering project. Its form follows two sources:
+A project's roadmap as one HTML page, `Roadmap.html`, first used in the Prefix Steering project (as LaTeX). It needs no build: edit it and open it in a browser. Its form follows two sources:
 
 - The Specific Aims page of NIH grant applications: a central question, then for each aim its hypothesis, approach, expected outcomes, potential problems and alternatives, and how success is judged. Here these are the fields Hypothesis, Theory and Experiment, Outcomes, Risks and Done when; Paper says whether the aim goes into this paper or a follow-up.
 - Steinhardt, "Research as a Stochastic Decision Process" (2018), for the order: within the aims, the cheap step most likely to fail comes first.
 
-`\todo`, `\doing`, `\done` and `\dropped` draw the `[ ]`, `[/]`, `[x]` and `[-]` of our task lists; `\blank` marks a field not written yet. The reading list at the end holds the papers we read for the project, by category: `\item[\todo] \paper{key}{Why we read it.}` prints the full reference from `Roadmap.bib` with natbib's `bibentry` (there is no biber here, so no biblatex), and `\first` marks a paper to read first. Compiled with pdflatex and bibtex.
+A task's or a field's status is its class, `todo`, `doing`, `done` or `dropped`, drawn as ○ ◐ ✓ – (the `[ ]`, `[/]`, `[x]` and `[-]` of our task lists, with the signs of the JD pages); `<span class="blank">—</span>` marks a field not written yet. The reading list at the end holds the papers we read for the project, by category: `<li class="todo"><cite>Authors. <a href="URL">Title</a>. Venue, Year.</cite><p>Why we read it.</p></li>`, and the class `first` marks a paper to read first. The page is light by default, with a toggle for dark or the system's theme, and prints without the toggle.
 
 New roadmap:
 
-1. Copy `roadmap/` to the project root.
+1. Copy `roadmap/Roadmap.html` to the project root.
 2. Fill the fields marked with a dash; copy the Aim A section for each further aim.
-3. Add a paper: its BibTeX from the `bib-lookup` skill into `Roadmap.bib`, then its `\paper` line under its category.
-4. `latexmk -pdf Roadmap.tex`.
+3. Add a paper: its reference from the `bib-lookup` skill, never from memory, as a `<li>` under its category.
 
 ## TODO
 
 - [x] arxiv: the text in `sections/`, shared with a conference version; `arxiv_upload.py` for arXiv.
 - [x] poster: the conference logo's placeholder.
+- [/] roadmap: an HTML page instead of LaTeX.
 - [ ] Project page and personal website (website repository): not finished; revise.
 - [ ] Add a slides template.
 - [ ] Add a video template, with the demo video as one of its outputs.

@@ -1,0 +1,12 @@
+\section{Introduction}
+
+Conference styles are designed for anonymous review, not for the version people read and cite. An arXiv version needs a first page that says who wrote the paper, where its resources live, and what it finds, while keeping the reviewed body text unchanged. This template does that on top of NeurIPS-like geometry~\citep{NEURIPS2020_1457c0d6} and keeps commands common in activation steering papers~\citep{turner2023steering, rimsky-etal-2024-steering, zou2023transparency}.
+
+\researchquestions{\textbf{Q1.}\enspace Can the arXiv version share the conference body text unchanged?\par\smallskip
+\textbf{Q2.}\enspace Can common paper elements be styled once, in the template, instead of per paper?}
+
+\paragraph{Running example.} In activation steering, a hidden state $\vh_t$ at generation step $t$ is shifted along a unit direction $\vr$,
+\begin{equation}\label{eq:steer}
+\vh_t \leftarrow \vh_t + \lambda_t \vr, \qquad \lambda_t = \lambda\,\mathbb{I}[t \le m],
+\end{equation}
+where full steering uses $m = T$ and prefix steering uses a short prefix $m \ll T$. \Cref{fig:schedules} plots these schedules and \Cref{alg:prefix} states the procedure.

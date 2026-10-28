@@ -1,0 +1,11 @@
+\section{Writing Conventions}
+
+\paragraph{Results.} State the claim, then the evidence. Use the \texttt{theorem}, \texttt{lemma}, \texttt{prop}, \texttt{cor}, \texttt{definition}, and \texttt{remark} environments, with proofs in the appendix (\appref{app:proofs}); code and prompts are in \appref{app:implementation}.
+
+\begin{prop}\label{prop:budget}
+Under \cref{eq:steer}, the total intervention $\sum_{t=1}^{T} \lambda_t \|\vr\|_2$ equals $\lambda m$, so prefix steering uses a fraction $m/T$ of the full-steering budget.
+\end{prop}
+
+\paragraph{References.} Cite with \texttt{\textbackslash citep} for parenthetical citations~\citep{chowdhery2023palm, achiam2023gpt} and \texttt{\textbackslash citet} when the authors are the subject: \citet{scalena2024multiproperty} compose several steering directions. Protect acronyms in titles with braces, such as \texttt{\{MMLU-Pro\}}~\citep{wang2024mmlu}; datasets~\citep{politeguard} use \texttt{@misc} with a \texttt{url}.
+
+\takeaway{Keep the text in \texttt{sections/}, one file per section, and let \texttt{main.tex} hold only the preamble, the title block and the order of the sections. A conference version is a second main file with the conference's style that inputs the same sections, so both versions share one text.}

@@ -1,0 +1,9 @@
+\section{Proofs}\label{app:proofs}
+
+\begin{proof}[Proof of \Cref{prop:budget}]
+Since $\|\vr\|_2 = 1$ and $\lambda_t = \lambda$ for $t \le m$ and $0$ otherwise, $\sum_{t=1}^{T} \lambda_t \|\vr\|_2 = \sum_{t=1}^{m} \lambda = \lambda m$. Full steering has $m = T$, so the ratio is $m/T$.
+\end{proof}
+
+\begin{remark}
+The budget counts only direct interventions; it ignores how a shift at step $t$ propagates to later steps through attention.
+\end{remark}

@@ -12,13 +12,15 @@ A compact LaTeX template with a customizable title page, resource links, an opti
 
 [![First-page preview of the arXiv template](arxiv/preview.svg)](arxiv/example.pdf)
 
-1. Copy `arxiv/` into the project.
-2. Edit `main.tex` and `reference.bib`, and replace `logo.pdf` with your own logo.
+1. Copy `arxiv/` and `latexmkrc` into the project.
+2. Write the text in `sections/`, one file per section; `main.tex` holds only the preamble, the title block and the order of the sections. Add references to `reference.bib`, and replace `logo.pdf` with your own logo.
 3. Compile with a recent TeX Live installation:
 
    ```sh
    latexmk -pdf main.tex
    ```
+
+A conference version shares the same text. Put it in a folder beside `arxiv/` (e.g. `iclr2027/`) with the conference's style files, and write its main file with the conference's style and the same lines as `arxiv/main.tex`: `\input{macro}`, `\input{sections/introduction}`, …, `\bibliography{reference}`. The `latexmkrc` at the project root adds `arxiv/` to the search paths, on Overleaf and locally, after the current folder.
 
 The [example PDF](arxiv/example.pdf) and [`main.tex`](arxiv/main.tex) document the layout, commands, and customization options.
 Before sharing your paper, disable review comments by commenting out `\showcommentstrue` in `macro.tex`.

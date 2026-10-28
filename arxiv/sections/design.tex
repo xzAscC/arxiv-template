@@ -1,0 +1,69 @@
+\section{Design}
+
+\paragraph{First page.} \texttt{\textbackslash maketitle} followed by the \texttt{abstract} environment produces the title, authors, resource rows, and abstract box; a figure with placement \texttt{[H]} right after the abstract becomes the teaser (\Cref{fig:teaser}). All resource rows (project page, code, data, models, poster, slides, video, contact) are optional: keep only the ones you have, even just one, and the rest disappear. \texttt{\textbackslash arxivaccent\{R, G, B\}} recolors the page. Review comments are on by default: \zz{a comment.} \xz{a comment.} \revise{Revised,} \edit{edited.}
+
+\paragraph{Outline.} \texttt{\textbackslash arxivoutline} after the teaser puts the contents on its own page, and the main text starts on the next page. Its optional argument sets how much of the appendix is listed: \texttt{\textbackslash arxivoutline} lists appendix subsections, \texttt{\textbackslash arxivoutline[section]} lists only appendix sections, and \texttt{\textbackslash arxivoutline[none]} omits them. Remove the command to skip the outline page.
+
+\paragraph{Typography.} Body text is Times at 10\,pt, headings and caption labels are Helvetica, and references are set one size smaller. Caption labels are bold sans serif and subfigure captions are one size smaller (\Cref{fig:sub}). \Cref{tab:commands} lists every command the template adds.
+
+\begin{figure}[t]
+\centering
+\begin{minipage}[c]{0.48\linewidth}
+\centering
+\begin{tikzpicture}
+\begin{axis}[arxiv plot, xlabel={Generation step $t$}, ylabel={Strength $\lambda_t$},
+  xmin=0, xmax=64, ymin=0, ymax=1.15, ytick={0,0.5,1}, legend style={at={(0.97,0.5)}, anchor=east}]
+\addplot coordinates {(0,1) (64,1)};
+\addlegendentry{Full, $m = T$}
+\addplot coordinates {(0,1) (8,1) (8,0) (64,0)};
+\addlegendentry{Prefix, $m = 8$}
+\addplot+[domain=0:64, samples=100] {exp(-x/10)};
+\addlegendentry{Exponential decay}
+\end{axis}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.48\linewidth}
+\begin{algorithm}[H]
+\caption{Prefix steering}
+\label{alg:prefix}
+\begin{algorithmic}[1]
+\Require prompt $x$, direction $\vr$, strength $\lambda$, $m$
+\For{$t = 1, \dots, T$}
+  \State $\vh_t \gets \textsc{Forward}(x, y_{<t})$
+  \If{$t \le m$}
+    \State $\vh_t \gets \vh_t + \lambda \vr$
+  \EndIf
+  \State $y_t \sim p(\cdot \mid \vh_t)$
+\EndFor
+\State \Return $y_{1:T}$
+\end{algorithmic}
+\end{algorithm}
+\end{minipage}
+\caption{\textbf{Steering schedules.} \textbf{Left:} strength $\lambda_t$ in \cref{eq:steer} under full, prefix, and decaying schedules, drawn with the \texttt{arxiv plot} pgfplots style. \textbf{Right:} the corresponding procedure, typeset with \texttt{algpseudocode}.}
+\label{fig:schedules}
+\end{figure}
+
+\begin{table}[t]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\caption{\textbf{Template commands.} Everything else is standard \LaTeX.}
+\label{tab:commands}
+\begin{tabular}{@{} l l @{}}
+\toprule
+Command & Purpose \\
+\midrule
+\texttt{\textbackslash and}, \texttt{\textbackslash institute}, \texttt{\textbackslash arxivnotes}, \texttt{\textbackslash coremark} & Authors, affiliations, contribution notes \\
+\texttt{\textbackslash projectpage}, \texttt{\textbackslash code}, \texttt{\textbackslash poster}, \texttt{\textbackslash slides}, \texttt{\textbackslash video}, \texttt{\textbackslash contact} & Optional resource rows \\
+\texttt{\textbackslash arxivresource\{icon\}\{label\}\{links\}} & Custom resource row, e.g.\ data or models \\
+\texttt{\textbackslash arxivlogo[width]\{file\}} & Logo in the abstract box \\
+\texttt{\textbackslash arxivaccent\{R, G, B\}} & Title-block color \\
+\texttt{\textbackslash researchquestions}, \texttt{\textbackslash takeaway} & Callout boxes \\
+\texttt{promptbox}, \texttt{judgepromptbox} & Prompt boxes \\
+\texttt{\textbackslash zz}, \texttt{\textbackslash xz}, \texttt{\textbackslash revise}, \texttt{\textbackslash edit} & Review comments and revisions \\
+\texttt{\textbackslash arxivoutline[depth]} & Contents page; depth of appendix entries \\
+\texttt{\textbackslash arxivappendix} & Appendix heading with its own contents \\
+\texttt{\textbackslash appref\{label\}} & Linked ``Appendix~X'' reference \\
+\bottomrule
+\end{tabular}
+\end{table}

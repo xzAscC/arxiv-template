@@ -1,0 +1,32 @@
+\resizebox{\linewidth}{!}{%
+\begin{tikzpicture}[
+  node distance=2.5pt,
+  tok/.style={draw=gray!45, rounded corners=2.5pt, minimum height=18pt, inner xsep=4pt,
+    inner ysep=0pt, font=\small\sffamily, fill=white},
+  gen/.style={tok, fill=gray!8},
+  hit/.style={tok, fill=ArxivAccent!18, draw=ArxivAccent!60},
+  lbl/.style={font=\small\sffamily\bfseries, anchor=east},
+  note/.style={font=\footnotesize\sffamily, text=gray},
+]
+% #1: y, #2: label, #3: number of steered generated tokens
+\newcommand{\steerrow}[3]{%
+  \node[lbl] at (0,#1) {#2};
+  \node[tok, anchor=west] (last) at (0.15,#1) {Write};
+  \foreach \w in {a,movie,review} {\node[tok, right=of last] (last) {\w};}
+  \node[hit, right=of last] (last) {:};
+  \coordinate (split) at ($(last.east)+(1.25pt,0)$);
+  \foreach \w [count=\i] in {The,film,is,a,quiet,joy,from,start,to,end,.} {
+    \ifnum\i<#3 \node[hit, right=of last] (last) {\w};
+    \else \node[gen, right=of last] (last) {\w}; \fi
+  }
+}
+\steerrow{0}{Full steering}{12}
+\steerrow{-0.8}{Prefix steering}{1}
+\draw[gray!50, dashed] ($(split)+(0,0.4)$) -- ($(split)+(0,-1.3)$);
+\node[note, anchor=east] at ($(split)+(-0.1,-1.2)$) {prompt};
+\node[note, anchor=west] at ($(split)+(0.1,-1.2)$) {generation};
+\node[note, anchor=east, text=black] at ($(last.east)+(0,-1.2)$)
+  {\tikz\node[hit, minimum height=8pt, minimum width=8pt]{};\enspace steered: $\vh_t \leftarrow \vh_t + \lambda\vr$};
+\end{tikzpicture}}
+\caption{\textbf{Teaser.} Full steering shifts the hidden state at every generated position; Prefix Steering shifts it only over a short span starting at the final prompt token, and generation continues from the context this creates.}
+\label{fig:teaser}

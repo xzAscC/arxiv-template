@@ -1,0 +1,60 @@
+\section{Implementation}\label{app:implementation}
+
+\subsection{Code}
+
+\begin{lstlisting}[language=Python]
+def prefix_hook(module, inputs, output, step, r, lam, m):
+    """Add lam * r to the last hidden state for the first m generated tokens."""
+    if step < m:  # prefix only
+        output[:, -1, :] += lam * r
+    return output
+\end{lstlisting}
+
+\subsection{Prompts}\label{app:prompts}
+
+\begin{promptbox}
+\textbf{User:} Write a short story about a lighthouse keeper.\par
+\textbf{Assistant:} \textit{[generated with prefix steering, $m = 8$]}
+\end{promptbox}
+
+\begin{judgepromptbox}{Judge prompt}
+You are given a response. Answer \texttt{YES} if it expresses the target concept and \texttt{NO} otherwise. Output only the label.
+\end{judgepromptbox}
+
+\subsection{Hyperparameters}
+
+\begin{table}[H]
+\centering
+\footnotesize
+\caption{\textbf{Hyperparameters.} Values are template placeholders.}
+\label{tab:hparams}
+\begin{tabular}{@{} l c @{}}
+\toprule
+Parameter & Value \\
+\midrule
+Prefix length $m$ & 8 \\
+Strength $\lambda$ & xx.x \\
+Maximum new tokens $T$ & 64 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Figures}\label{app:figures}
+
+\begin{figure}[H]
+\centering
+\begin{subfigure}[t]{0.32\linewidth}
+  \includegraphics[width=\linewidth]{example-image-a}
+  \caption{First panel.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.32\linewidth}
+  \includegraphics[width=\linewidth]{example-image-b}
+  \caption{Second panel.}
+\end{subfigure}\hfill
+\begin{subfigure}[t]{0.32\linewidth}
+  \includegraphics[width=\linewidth]{example-image-c}
+  \caption{Third panel.}
+\end{subfigure}
+\caption{\textbf{Subfigures.} Replace the placeholders with PDF figures from \texttt{figs/}.}
+\label{fig:sub}
+\end{figure}

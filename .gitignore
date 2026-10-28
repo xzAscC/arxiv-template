@@ -4,7 +4,15 @@
 *.fdb_latexmk
 *.fls
 *.log
+*.nav
 *.out
+*.snm
 *.synctex.gz
-main.pdf
 *.toc
+*.vrb
+# latexmk intermediate files when aux_dir is set
+.build/
+# compiled outputs; arxiv/example.pdf is the published example
+arxiv/main.pdf
+poster/poster.pdf
+roadmap/Roadmap.pdf

@@ -1,0 +1,187 @@
+% Poster theme for beamerposter, after the card layout of the NeurIPS 2025 poster "Projecting
+% Assumptions: The Duality between Sparse Autoencoders and Concept Geometry" (Hindupur, Lubana,
+% Fel, Ba): the poster is almost only figures. One sentence carries the message; it is split into
+% parts, and each part is the heading of a card that holds the figure for it, so the headings read
+% in order make the sentence. A white title band; a first row with the main claim, a figure and a
+% QR code; then rows of white cards on a light gray page, each row as wide as the page and its
+% cards as wide as their figures need.
+% Colours come from the paper's figures (the paper-figures skill): text in its ink, headings in a
+% slate blue, outlines in the paper's method colours. Text and math use Source Sans Pro, the
+% font of the same skill; the title, the claim and the card headings use Inter SemiBold.
+% Load beamerposter first: the font sizes below (\Huge, \LARGE, ...) come from it.
+\ProvidesPackage{beamerthemeposter}
+
+% Fonts: the figstyle.tex preamble. professionalfonts keeps beamer from replacing the math fonts.
+\usefonttheme{professionalfonts}
+\RequirePackage[T1]{fontenc}
+\RequirePackage{sourcesanspro}
+\RequirePackage{amsmath}
+\RequirePackage[scaled=.98]{newtxsf}
+\let\mathrm\mathsf
+\SetSymbolFont{operators}{normal}{T1}{SourceSansPro-TLF}{m}{n}
+\RequirePackage{microtype}
+\RequirePackage{tikz}
+\usetikzlibrary{calc}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{qrcode}
+
+% Colours. posterink, postermuted and posterline are figstyle.tex's ink, muted and rule.
+% posteraccent is the paper's main method colour (default teal): define it before \usetheme.
+\definecolor{posterink}{HTML}{203342}
+\definecolor{postermuted}{HTML}{74818A}
+\definecolor{posterline}{HTML}{DCE3E6}
+\definecolor{posterheading}{HTML}{2F4A78}  % card headings and the claim
+\definecolor{posterpage}{HTML}{F3F4F6}     % the page behind the cards
+\providecolor{posteraccent}{HTML}{007E80}
+
+\setbeamercolor{background canvas}{bg=posterpage}
+\setbeamercolor{normal text}{fg=posterink}
+\setbeamercolor{structure}{fg=posterheading}
+\setbeamercolor{alerted text}{fg=posteraccent}
+
+% Sizes for scale=1.45, where \normalsize is 36pt. Headings are Inter SemiBold (the T1 family
+% of TeX Live's inter package, chosen by name so the text stays in Source Sans).
+\newcommand\poster@inter{\fontfamily{Inter-TLF}\selectfont}
+\newcommand\poster@semibold{\fontseries{sb}\selectfont}
+\setbeamerfont{title}{size=\Huge,family=\poster@inter,series=\poster@semibold}       % 90pt
+\setbeamerfont{author}{size=\Large}                                                  % 52pt
+\setbeamerfont{institute}{size=\normalsize}
+\setbeamerfont{card title}{size=\Large,family=\poster@inter,series=\poster@semibold} % 52pt
+\setbeamerfont{claim}{size=\LARGE,family=\poster@inter,series=\poster@semibold}      % 62pt
+\setbeamerfont{statement}{size=\large}                     % 43pt
+% No small print (captions, sources, notes): the user finds it spoils the look
+
+% Layout: the title band, the margin around the cards and the gap between them
+\newlength\posterbandheight \setlength\posterbandheight{.125\paperheight}
+\newlength\postermargin     \setlength\postermargin{.014\paperwidth}
+\newlength\cardgap          \setlength\cardgap{.011\paperwidth}
+\newlength\cardarc          \setlength\cardarc{.016\paperheight}
+\newlength\cardpad          \setlength\cardpad{.012\paperwidth}
+% The height the rows share: the page below the band, less the bottom margin
+\newlength\poster@body
+\setlength\poster@body{\dimexpr\paperheight-\posterbandheight-\postermargin\relax}
+\setbeamersize{text margin left=\postermargin,text margin right=\postermargin}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}{}
+\frenchspacing
+
+% Parts of the title band, set in the preamble: \posterlogo{file} on the left (the university),
+% \conferencelogo{file} on the right. \title and \subtitle are one line each.
+\def\poster@logo{}
+\def\poster@conflogo{}
+\newcommand\posterlogo[1]{\def\poster@logo{#1}}
+\newcommand\conferencelogo[1]{\def\poster@conflogo{#1}}
+% One line, shrunk to the line width when it is wider
+\newcommand\poster@fit[1]{\sbox0{#1}%
+  \ifdim\wd0>\linewidth\resizebox{\linewidth}{!}{\usebox0}\else\usebox0\fi}
+
+\setbeamertemplate{headline}{%
+  \leavevmode\hbox{\begin{tikzpicture}[inner sep=0pt]
+    \useasboundingbox (0,0) rectangle (\paperwidth,-\posterbandheight);
+    \fill[white] (0,0) rectangle (\paperwidth,-\posterbandheight);
+    % The logos' inner edges: left and right
+    \ifx\poster@logo\@empty
+      \coordinate (left) at (\postermargin,0);
+    \else
+      \node[anchor=west] (logo) at (\postermargin,-.5\posterbandheight)
+        {\includegraphics[height=.78\posterbandheight]{\poster@logo}};
+      \coordinate (left) at ([xshift=.02\paperwidth]logo.east);
+    \fi
+    \ifx\poster@conflogo\@empty
+      \coordinate (right) at (\paperwidth-\postermargin,0);
+    \else
+      \node[anchor=east] (conf) at (\paperwidth-\postermargin,-.5\posterbandheight)
+        {\includegraphics[height=.78\posterbandheight]{\poster@conflogo}};
+      \coordinate (right) at ([xshift=-.02\paperwidth]conf.west);
+    \fi
+    % The title is centred on the page, as wide as the wider logo leaves free on both sides (\n1).
+    % flush center, not center: TikZ's center fixes the word space at 1/3 em of the 10pt font
+    % outside the node, which squeezes words together at poster sizes
+    \path let \p1 = (left), \p2 = (right), \n1 = {max(\x1,\paperwidth-\x2)} in
+      node[text width=\paperwidth-2*\n1,align=flush center,text=posterink]
+      at (.5\paperwidth,-.5\posterbandheight) {%
+      {\usebeamerfont{title}\poster@fit{\inserttitle}\par}%
+      \ifx\insertsubtitle\@empty\else{\usebeamerfont{title}\poster@fit{\insertsubtitle}\par}\fi
+      \vspace{.15em}%
+      {\usebeamerfont{author}\poster@fit{\insertauthor}\par}%
+      \ifx\insertinstitute\@empty\else
+        {\usebeamerfont{institute}\color{postermuted}\poster@fit{\insertinstitute}\par}\fi};
+  \end{tikzpicture}}%
+}
+
+% Headings: letter-spaced, over a rule as wide as the text (or the line, when they wrap)
+\newcommand\poster@heading[2]{% font, text
+  \sbox0{\usebeamerfont{#1}\textls[20]{#2}}%
+  \ifdim\wd0>\linewidth
+    \parbox{\linewidth}{\centering\usebeamerfont{#1}\textls[20]{#2}\par
+      \vspace{.12em}\hrule height .1em}%
+  \else
+    % \leavevmode: in vertical mode the box would skip the paragraph and its centring
+    \leavevmode\vbox{\hbox{\usebox0}\kern.12em\hrule height .1em width \wd0}%
+  \fi}
+
+% Rows and cards. \begin{cardrow}{f} is a row f of the shared height tall; the rows' f add up
+% to 1 (a row's height is f x shared height - gap, so the gaps come out of the shares and the rows
+% fill the page). A row has 24 columns: \begin{card}{n}{heading} spans n of them, and a row's
+% cards add up to 24 (12 is half the row, 8 a third). The cards of a row are as tall as the row.
+% The raster sets its boxes in one paragraph, so a blank line between cards would start a new
+% row: \par does nothing between them (tcolorbox restores it inside each card).
+\newlength\poster@rowheight
+\newenvironment{cardrow}[1]
+  {\par\vspace{\cardgap}%
+   \setlength\poster@rowheight{\dimexpr#1\poster@body-\cardgap\relax}%
+   \begin{tcbraster}[raster columns=24,raster column skip=\cardgap,
+     raster before skip=0pt,raster after skip=0pt]%
+   \let\par\relax}
+  {\let\par\@@par\end{tcbraster}}
+\tcbset{poster card/.style={enhanced,frame hidden,colback=white,arc=\cardarc,
+  height=\poster@rowheight,valign=center,
+  left=\cardpad,right=\cardpad,top=.8\cardpad,bottom=.8\cardpad,coltext=posterink}}
+\newtcolorbox{card}[3][]{poster card,raster multicolumn=#2,
+  title={\poster@heading{card title}{#3}},colbacktitle=white,coltitle=posterheading,
+  halign title=center,titlerule=0pt,toptitle=.6\cardpad,bottomtitle=.2\cardpad,#1}
+% The claim row's card, with no heading: \begin{herocard}{n}
+\newtcolorbox{herocard}[2][]{poster card,raster multicolumn=#2,#1}
+
+% Inside the claim card: \claim{the main claim}, then \statement{lines with \textbf{key
+% phrases}}, and \qrlink{url}{label}
+\newcommand\claim[1]{{\color{posterheading}\poster@heading{claim}{#1}}\par\vspace{.5em}}
+\newcommand\statement[1]{{\usebeamerfont{statement}#1\par}}
+\newlength\qrsize \setlength\qrsize{.09\paperheight}
+\newcommand\qrlink[2]{{\centering\qrcode[height=\qrsize]{#1}\par\vspace{.3em}
+  {\large\itshape #2\par}}}
+
+% An outlined box for an equation or a definition: \begin{outlinebox}[colour]{label}. The label
+% sits on top, in the colour; use the colour a figure gives the same method.
+\newtcolorbox{outlinebox}[2][posteraccent]{enhanced,colback=white,colframe=#1,boxrule=3pt,
+  arc=\cardarc,left=.6em,right=.6em,top=.4em,bottom=.4em,halign=center,
+  before skip=.5em,after skip=.5em,
+  before upper={\if\relax\detokenize{#2}\relax\else{\color{#1}#2\par}\vspace{.2em}\fi}}
+
+% Theorems sit in an outlined box in the accent, upright
+\newtheorem{proposition}[theorem]{Proposition}
+\setbeamertemplate{theorem begin}{%
+  \begin{outlinebox}{\upshape\bfseries\inserttheoremname\inserttheoremnumber
+    \ifx\inserttheoremaddition\@empty\else\ (\inserttheoremaddition)\fi}\upshape\raggedright}
+\setbeamertemplate{theorem end}{\end{outlinebox}}
+
+% A figure as large as its card allows: \fig{file} is as wide as the card and at most as tall as
+% the card's free height; \fig[.6]{file} takes at most .6 of that height, for a card with more in
+% it. (\tcbtextheight holds the height of a fixed-height box's text part as text, e.g. 980.5pt;
+% \dimexpr makes it a length that #1 can scale.)
+\newcommand\fig[2][1]{\par{\centering
+  \includegraphics[width=\linewidth,height=#1\dimexpr\tcbtextheight\relax,keepaspectratio]{#2}\par}}
+
+\setbeamertemplate{itemize item}{\color{posterheading}\textbullet}
+\setbeamertemplate{itemize subitem}{\color{postermuted}\textendash}
+\setbeamertemplate{enumerate item}{\color{posterheading}\bfseries\insertenumlabel.}
+\setbeamertemplate{caption}{\centering\color{postermuted}\insertcaption\par}
+
+% A dashed box that marks where a figure goes while drafting: \placeholder{height}{label}
+\newcommand\placeholder[2]{\par\noindent
+  \begin{tikzpicture}
+    \useasboundingbox (0,0) rectangle (\linewidth,#1);
+    \draw[posterline!80!postermuted,densely dashed,line width=2pt,rounded corners=6pt]
+      (1pt,1pt) rectangle (\linewidth-1pt,#1-1pt);
+    \node[text=postermuted] at (.5\linewidth,.5*#1) {#2};
+  \end{tikzpicture}\par}

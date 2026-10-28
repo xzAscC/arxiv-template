@@ -1,0 +1,76 @@
+% Research poster. Copy this folder to <paper project>/poster/ and fill it in.
+% The poster is almost only figures. Write the message as a sentence or two, split them into
+% parts, and give each part a card with the figure for it: the headings, read in order, make the
+% sentences.
+% Compile with pdflatex (Overleaf's default): latexmk -pdf poster.tex
+\documentclass[final]{beamer}
+% Paper size in cm: 48 x 36 in landscape is width=121.92,height=91.44; A0 portrait is
+% width=84.1,height=118.9. scale sets the text size: body text is 24.9pt x scale (36pt here).
+\usepackage[size=custom,width=121.92,height=91.44,scale=1.45]{beamerposter}
+% The paper's main method colour, the colour its figures give it (default teal):
+% \definecolor{posteraccent}{HTML}{007E80}
+\usetheme{poster}
+% Figures: \fig{../figs/name} enlarges a paper figure, labels included, to fill its card;
+% \fig[.6]{...} fills at most .6 of the card's height, for a card with more in it. To redraw a
+% figure at poster size instead, load the paper's figure style, then enlarge its fonts
+% (\renewcommand\labeltype{\small}, \renewcommand\ticktype{\footnotesize}) and marks:
+% \input{../figs/src/figstyle}
+
+\title{Title of the Paper:}
+\subtitle{Second Line of the Title}
+\author{First Author, Second Author}
+\institute{Department, The Ohio State University}
+\posterlogo{osu-block-o}
+% The conference's logo, a file beside poster.tex:
+% \conferencelogo{conference-logo}
+
+\begin{document}
+\begin{frame}[t]
+
+% Rows: the heights (.3, .35, .35) add up to 1; in each row, the cards' columns add up to 24
+\begin{cardrow}{.3}
+  \begin{herocard}{24}
+    \begin{minipage}[c]{.36\linewidth}
+      \placeholder{16cm}{Teaser figure}
+    \end{minipage}\hfill
+    \begin{minipage}[c]{.5\linewidth}
+      \claim{The main claim of the paper, in one line.}
+      \statement{The setting, with its \textbf{key terms} in bold.\\
+        What the paper finds about \textbf{the first thing}.\\
+        What it finds about \textbf{the second thing}.}
+    \end{minipage}\hfill
+    \begin{minipage}[c]{.1\linewidth}
+      \qrlink{https://example.com}{Paper}
+    \end{minipage}
+  \end{herocard}
+\end{cardrow}
+
+\begin{cardrow}{.35}
+  \begin{card}{8}{The first part of the sentence,}
+    \placeholder{15cm}{Figure}
+  \end{card}
+  \begin{card}{10}{its second part,}
+    \begin{outlinebox}{A definition}
+      \[ s(x) = \frac{\lVert h(x) - \mu_- \rVert_2^2}{\lVert h(x) - \mu_+ \rVert_2^2} \]
+    \end{outlinebox}
+    \placeholder{8cm}{Figure}
+  \end{card}
+  \begin{card}{6}{and its end.}
+    \placeholder{15cm}{Figure}
+  \end{card}
+\end{cardrow}
+
+\begin{cardrow}{.35}
+  \begin{card}{12}{A second sentence starts here,}
+    \begin{theorem}[Name]
+      The main result, stated as in the paper, for an input $x$.
+    \end{theorem}
+    \placeholder{9cm}{Figure}
+  \end{card}
+  \begin{card}{12}{and ends with the result!}
+    \placeholder{14cm}{Figure}
+  \end{card}
+\end{cardrow}
+
+\end{frame}
+\end{document}

@@ -1,0 +1,105 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amssymb,stmaryrd}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{natbib,bibentry}
+\usepackage[hidelinks]{hyperref}
+\bibliographystyle{plainnat}
+
+% Status of a task, drawn like the [ ] [/] [x] [-] of our plain-text task lists.
+\newcommand{\todo}{$\square$}
+\newcommand{\doing}{$\boxslash$}
+\newcommand{\done}{$\boxtimes$}
+\newcommand{\dropped}{$\boxminus$}
+% A field not written yet.
+\newcommand{\blank}{\textcolor{gray}{---}}
+% A paper in the reading list: its full reference from Roadmap.bib, then why we read it.
+\newcommand{\paper}[2]{\bibentry{#1}\par\textit{#2}}
+% Marks a paper to read first.
+\newcommand{\first}{$\bigstar$\ }
+
+% An aim's fields: the name on the left, the text beside it.
+\newenvironment{fields}
+  {\begin{description}[style=sameline, leftmargin=7em, labelwidth=6.5em, font=\normalfont\bfseries]}
+  {\end{description}}
+% A list of tasks; each \item takes its status as the label, e.g. \item[\todo].
+\newenvironment{tasks}
+  {\begin{itemize}[leftmargin=1.5em, itemsep=2pt]}
+  {\end{itemize}}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+
+\begin{document}
+% Reads the references for \bibentry without printing a bibliography; \nocite takes every entry.
+\nobibliography{Roadmap}
+\nocite{*}
+
+\begin{center}
+  {\Large\bfseries Project Roadmap}\\[4pt]
+  Started \blank \qquad
+  \todo\ to do \quad \doing\ doing \quad \done\ done \quad \dropped\ dropped
+\end{center}
+
+\section*{Central question}
+\blank
+
+\section*{Order}
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+  \item \blank
+  \item Within the aims, start with the cheap step that is most likely to fail.
+  \item For each experiment, fix what it compares, its metric and its output before writing code.
+\end{itemize}
+
+% One section per aim; copy it for Aim B, C, ...
+\section*{Aim A. \blank}
+\begin{fields}
+  \item[Hypothesis] \blank
+  \item[Theory] \todo\ \blank
+  \item[Experiment] \todo\ \blank
+  \item[Outcomes] \blank
+  \item[Risks] \blank
+  \item[Done when] \blank
+  \item[Paper] undecided
+\end{fields}
+
+\section*{Templates}
+\begin{tasks}
+  \item[\todo] Poster.
+  \item[\todo] The rest of the template (Research Template in Projects.md): arXiv, project page, code,
+    demo video, model card, slides, video, the research process and how we work with AI.
+\end{tasks}
+\begin{fields}
+  \item[Done when] \blank
+\end{fields}
+
+\section*{Code}
+Make the code easier to read, and keep the experiments apart.
+\begin{tasks}
+  \item[\todo] One command reproduces each figure in \path{figs/}, with its data source written down.
+\end{tasks}
+\begin{fields}
+  \item[Done when] Every figure in \path{figs/} comes out of a clean clone.
+\end{fields}
+
+\section*{Reading}
+\begin{fields}
+  \item[Topics] \blank
+  \item[Done when] A list with one sentence per paper on its relation to this project.
+\end{fields}
+
+\section*{Open decisions}
+\begin{itemize}[leftmargin=1.5em, itemsep=2pt]
+  \item \blank
+\end{itemize}
+
+% One subsection per category. Add a paper: its BibTeX (bib-lookup skill) to Roadmap.bib,
+% and \item[\todo] \paper{key}{Why we read it.} under its category.
+\section*{Reading list}
+\subsection*{\blank}
+\begin{tasks}
+  \item[\todo] \blank
+\end{tasks}
+
+\end{document}

@@ -1,0 +1,28 @@
+poster/beamerthemeposter.sty
+  s_df3613a8e5240a::t_61fd28686744dd 69-70,75-82
+  s_df3613a8e5240a::t_b8172b9c42b5b8 83
+  s_df3613a8e5240a::t_6f9a582988492b 96,102
+poster/poster.tex
+  s_df3613a8e5240a::t_577b24e75172ec 23
+  s_df3613a8e5240a::t_75c2c9a2ee62b9 24,26
+README.md
+  s_df3613a8e5240a::t_a92f9c49be74e8 34
+  s_df3613a8e5240a::t_f4d4cd173326b2 35
+  s_df3613a8e5240a::t_27d56f02974823 30
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "084d44e6e124eaff01d96557bfab31de4f92a047",
+  "prompts": {},
+  "sessions": {
+    "s_df3613a8e5240a": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b700ec3d-c7b2-4af4-94a6-835256750d48",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "xzascc <xudongzhu3944@gmail.com>"
+    }
+  }
+}

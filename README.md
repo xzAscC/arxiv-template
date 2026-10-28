@@ -27,12 +27,12 @@ Before sharing your paper, disable review comments by commenting out `\showcomme
 
 A conference poster after the card layout of the NeurIPS 2025 poster "Projecting Assumptions: The Duality between Sparse Autoencoders and Concept Geometry" (Hindupur, Lubana, Fel, Ba). The poster is almost only figures. The message is a sentence or two, split into parts; each part is the heading of a card that holds the figure for it, so the headings, read in order, make the sentences.
 
-Layout: a white title band with the university's logo on the left, the title, authors and institute in the middle, and the conference's logo on the right; a first row with the main claim, a teaser figure and a QR code; then rows of white cards on a light gray page. Colours come from the paper's figures (the `paper-figures` skill): text in its ink, headings in slate blue, outlined boxes in the paper's method colours. Text and math use Source Sans Pro, the font of the same skill. Made with `beamerposter` and the theme `beamerthemeposter.sty`, compiled with pdflatex (Overleaf's default), so it compiles inside a paper's Overleaf project. The logo `osu-block-o.pdf` is the Block O image of our earlier InDesign poster.
+Layout: a white title band with the university's logo on the left, the title, authors and institute in the middle, and the conference's logo on the right; a first row with the main claim, a teaser figure and a QR code; then rows of white cards on a light gray page. Colours come from the paper's figures (the `paper-figures` skill): text in its ink, headings in slate blue, outlined boxes in the paper's method colours. Text and math use Source Sans Pro, the font of the same skill. Made with `beamerposter` and the theme `beamerthemeposter.sty`, compiled with pdflatex (Overleaf's default), so it compiles inside a paper's Overleaf project. The university's logo is Ohio State's Block O (`osu-block-o.pdf`, from our earlier InDesign poster); until the conference's logo is added, a dashed box named `conference-logo` marks its place.
 
 New poster:
 
-1. Copy `poster/` to `<project>/poster/`, with the conference's logo beside `poster.tex`.
-2. In `poster.tex`, set the paper size and text scale (the `beamerposter` line; default 48 × 36 in landscape with 36pt body text), the accent colour (the colour the paper's figures give its method), the title fields and `\conferencelogo`.
+1. Copy `poster/` to `<project>/poster/`, and put the conference's logo beside `poster.tex` as `conference-logo` (PDF, PNG or JPG).
+2. In `poster.tex`, set the paper size and text scale (the `beamerposter` line; default 48 × 36 in landscape with 36pt body text), the accent colour (the colour the paper's figures give its method) and the title fields.
 3. Write the sentences, split them into the card headings, and give each card its figure.
 4. `latexmk -pdf poster.tex`.
 

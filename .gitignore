@@ -16,3 +16,6 @@
 arxiv/main.pdf
 poster/poster.pdf
 roadmap/Roadmap.pdf
+# made by arxiv_upload.py
+/arxiv-upload/
+/arxiv-upload.zip

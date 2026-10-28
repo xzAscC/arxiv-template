@@ -12,7 +12,7 @@ A compact LaTeX template with a customizable title page, resource links, an opti
 
 [![First-page preview of the arXiv template](arxiv/preview.svg)](arxiv/example.pdf)
 
-1. Copy `arxiv/` and `latexmkrc` into the project.
+1. Copy `arxiv/`, `latexmkrc` and `arxiv_upload.py` into the project.
 2. Write the text in `sections/`, one file per section; `main.tex` holds only the preamble, the title block and the order of the sections. Add references to `reference.bib`, and replace `logo.pdf` with your own logo.
 3. Compile with a recent TeX Live installation:
 
@@ -21,6 +21,8 @@ A compact LaTeX template with a customizable title page, resource links, an opti
    ```
 
 A conference version shares the same text. Put it in a folder beside `arxiv/` (e.g. `iclr2027/`) with the conference's style files, and write its main file with the conference's style and the same lines as `arxiv/main.tex`: `\input{macro}`, `\input{sections/introduction}`, …, `\bibliography{reference}`. The `latexmkrc` at the project root adds `arxiv/` to the search paths, on Overleaf and locally, after the current folder.
+
+To upload to arXiv, run `python3 arxiv_upload.py` at the project root: it builds the paper and writes `arxiv-upload.zip` (and the folder `arxiv-upload/`). arXiv publishes the source, so the upload holds one `main.tex`, with `sections/` and `macro.tex` inlined by `latexpand`, without comments and without the review notes `\zz` and `\xz` (`\revise` and `\edit` keep their text), and only the files the build reads: `arxiv.sty`, the logo and the figures (`../figs/` becomes `figs/`), `reference.bib`, which arXiv runs BibTeX on, and the built `main.bbl`. Check the PDF that arXiv builds before you submit.
 
 The [example PDF](arxiv/example.pdf) and [`main.tex`](arxiv/main.tex) document the layout, commands, and customization options.
 Before sharing your paper, disable review comments by commenting out `\showcommentstrue` in `macro.tex`.
@@ -58,8 +60,8 @@ New roadmap:
 
 ## TODO
 
-- [ ] arxiv: not finished; revise.
-- [ ] poster: revise.
+- [x] arxiv: the text in `sections/`, shared with a conference version; `arxiv_upload.py` for arXiv.
+- [x] poster: the conference logo's placeholder.
 - [ ] Project page and personal website (website repository): not finished; revise.
 - [ ] Add a slides template.
 - [ ] Add a video template, with the demo video as one of its outputs.
